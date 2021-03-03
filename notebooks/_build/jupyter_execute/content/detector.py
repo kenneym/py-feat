@@ -77,7 +77,7 @@ image_prediction = pd.read_csv("output.csv")
 # Show results
 image_prediction
 
-# Detecting facial expressions images with many faces. 
+## Detecting facial expressions images with many faces. 
 Feat's Detector can find multiple faces in a single image. 
 
 test_image = glob.glob(os.path.join(test_data_dir, "tim-mossholder-hOF1bWoet_Q-unsplash.jpg"))
