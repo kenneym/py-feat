@@ -1,0 +1,17 @@
+# Table of content
+# Learn more at https://jupyterbook.org/customize/toc.html
+# Intro
+- file: content/intro
+
+# T.O.C
+- part: Installation
+  chapters:
+    - file: content/markdown
+    - file: content/notebooks
+
+
+- part: Contributing
+  chapters:
+  - file: content/content
+  - url: https://github.com/cosanlab/feat
+    title: GitHub Repository
