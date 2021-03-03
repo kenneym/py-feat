@@ -277,34 +277,61 @@
         </div>
         <nav id="bd-toc-nav">
             <ul class="nav section-nav flex-column">
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#">
-   Py-Feat: Python Facial Expression Analysis Toolbox
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-you-should-use-py-feat">
+   Why you should use Py-Feat
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#who-is-it-for">
+   Who is it for?
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#installation">
    Installation
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#check-installation">
    Check installation
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#available-models">
+   Available models
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#action-unit-detection">
+     Action Unit detection
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#emotion-detection">
+     Emotion detection
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#face-detection">
+     Face detection
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#facial-landmark-detection">
+     Facial landmark detection
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#contributions">
    Contributions
   </a>
  </li>
- <li class="toc-h1 nav-item toc-entry">
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#license">
    License
-  </a>
- </li>
- <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#references">
-   References
   </a>
   <ul class="nav section-nav flex-column">
   </ul>
@@ -323,26 +350,37 @@
                 
   <div class="section" id="py-feat-python-facial-expression-analysis-toolbox">
 <h1>Py-Feat: Python Facial Expression Analysis Toolbox<a class="headerlink" href="#py-feat-python-facial-expression-analysis-toolbox" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="https://travis-ci.org/cosanlab/feat/"><img alt="Build Status" src="https://api.travis-ci.org/cosanlab/feat.svg?branch=master" /></a>
+<a class="reference external" href="https://coveralls.io/github/cosanlab/feat?branch=master"><img alt="Coverage Status" src="https://coveralls.io/repos/github/cosanlab/feat/badge.svg?branch=master" /></a>
+<a class="reference external" href="https://github.com/cosanlab/feat/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/cosanlab/feat" /></a>
+<a class="reference external" href="https://github.com/cosanlab/feat/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/cosanlab/feat" /></a>
+<a class="reference external" href="https://github.com/cosanlab/feat/blob/master/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/cosanlab/feat" /></a></p>
 <p>Py-Feat provides a comprehensive set of tools and models to easily detect facial expressions (Action Units, emotions, facial landmarks) from images and videos, preprocess &amp; analyze facial expression data, and visualize facial expression data.</p>
+<div class="section" id="why-you-should-use-py-feat">
+<h2>Why you should use Py-Feat<a class="headerlink" href="#why-you-should-use-py-feat" title="Permalink to this headline">¶</a></h2>
+<p>Facial expressions convey rich information about how a person is thinking, feeling, and what they are planning to do. Recent innovations in computer vision algorithms and deep learning algorithms have led to a flurry of models that can be used to extract facial landmarks, Action Units, and emotional facial expressions with great speed and accuracy. However, researchers seeking to use these algorithms or tools such as <a class="reference external" href="https://github.com/TadasBaltrusaitis/OpenFace">OpenFace</a>, <a class="reference external" href="https://imotions.com/">iMotions</a>-<a class="reference external" href="https://www.affectiva.com/science-resource/affdex-sdk-a-cross-platform-realtime-multi-face-expression-recognition-toolkit/">Affectiva</a>, or <a class="reference external" href="https://www.noldus.com/facereader/">Noldus FaceReacer</a> may find them difficult to install, use, or too expensive to purchase. It’s also difficult to use the latest model or know exactly how good the models are for proprietary tools. <strong>We developed Py-Feat to create a free, open-source, and easy to use tool for working with facial expressions data.</strong></p>
+</div>
+<div class="section" id="who-is-it-for">
+<h2>Who is it for?<a class="headerlink" href="#who-is-it-for" title="Permalink to this headline">¶</a></h2>
+<p>Py-Feat was created for two primary audiences in mind:</p>
+<ul class="simple">
+<li><p><strong>Human behavior researchers</strong>: Extract facial expressions from face images or videos with a simple line of code and analyze your data with Feat.</p></li>
+<li><p><strong>Computer vision researchers</strong>: Develop &amp; share your latest model to a wide audience of users.</p></li>
+</ul>
+<p>and anyone else interested in analyzing facial expressions!</p>
 </div>
 <div class="section" id="installation">
-<h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><p>Install from pip</p></li>
-</ul>
+<h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
+<p>Install from <a class="reference external" href="https://pypi.org/project/py-feat/">pip</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">py</span><span class="o">-</span><span class="n">feat</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Install from source</p></li>
-</ul>
+<p>Install from <a class="reference external" href="https://github.com/cosanlab/feat">source</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">cosanlab</span><span class="o">/</span><span class="n">feat</span><span class="o">.</span><span class="n">git</span>
+<span class="n">cd</span> <span class="n">feat</span> <span class="o">&amp;&amp;</span> <span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">install</span>
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Install in Google Colab or Kaggle
-Installation to Colab or Kaggle is similar and you can install from pip too.</p></li>
-</ul>
+<p>You can install it in <a class="reference external" href="http://colab.research.google.com/">Google Colab</a> or <a class="reference external" href="http://kaggle.com/">Kaggle</a> using the code above. You can also install it in Development Mode:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>!git clone https://github.com/cosanlab/feat.git  
 !cd feat &amp;&amp; pip install -q -r requirements.txt
 !cd feat &amp;&amp; pip install -q -e . 
@@ -350,9 +388,10 @@ Installation to Colab or Kaggle is similar and you can install from pip too.</p>
 # Click Runtime from top menu and Restart Runtime! 
 </pre></div>
 </div>
+<p>The last development mode installation using the <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code> can also be useful when contributing to Py-Feat.</p>
 </div>
 <div class="section" id="check-installation">
-<h1>Check installation<a class="headerlink" href="#check-installation" title="Permalink to this headline">¶</a></h1>
+<h2>Check installation<a class="headerlink" href="#check-installation" title="Permalink to this headline">¶</a></h2>
 <p>Import the Fex class</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">feat</span> <span class="kn">import</span> <span class="n">Fex</span>
 </pre></div>
@@ -362,17 +401,47 @@ Installation to Colab or Kaggle is similar and you can install from pip too.</p>
 </pre></div>
 </div>
 </div>
+<div class="section" id="available-models">
+<h2>Available models<a class="headerlink" href="#available-models" title="Permalink to this headline">¶</a></h2>
+<p>Below is a list of models implemented in Py-Feat and ready to use. The model names are in the titles followed by the reference publications.</p>
+<div class="section" id="action-unit-detection">
+<h3>Action Unit detection<a class="headerlink" href="#action-unit-detection" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">JAANET</span></code>: Joint facial action unit detectio nand face alignment via adaptive attention (<a class="reference external" href="https://arxiv.org/pdf/2003.08834v1.pdf">Shao et al., 2020</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DRML</span></code>: Deep region and multi-label learning for facial action unit detection by (<a class="reference external" href="https://www.cv-foundation.org/openaccess/content_cvpr_2016/papers/Zhao_Deep_Region_and_CVPR_2016_paper.pdf">Zhao et al., 2016</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="emotion-detection">
+<h3>Emotion detection<a class="headerlink" href="#emotion-detection" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FeatNet</span></code> by Tiankang Xie</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ResMaskNet</span></code>: Facial expression recognition using residual masking network by (<a class="reference external" href="https://ailb-web.ing.unimore.it/icpr/author/3818">Pham et al., 2020</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="face-detection">
+<h3>Face detection<a class="headerlink" href="#face-detection" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">MTCNN</span></code>: Multi-task cascaded convolutional networks by (<a class="reference external" href="https://arxiv.org/pdf/1604.02878.pdf">Zhang et al., 2016</a>; <a class="reference external" href="https://ieeexplore.ieee.org/document/9239720">Zhang et al., 2020</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">FaceBoxes</span></code>: A CPU real-time fae detector with high accuracy by (<a class="reference external" href="https://arxiv.org/pdf/1708.05234v4.pdf">Zhang et al., 2018</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">RetinaFace</span></code>: Single-stage dense face localisation in the wild by (<a class="reference external" href="https://arxiv.org/pdf/1905.00641v2.pdf">Deng et al., 2019</a>)</p></li>
+</ul>
+</div>
+<div class="section" id="facial-landmark-detection">
+<h3>Facial landmark detection<a class="headerlink" href="#facial-landmark-detection" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">PFLD</span></code>: Practical Facial Landmark Detector by (<a class="reference external" href="https://arxiv.org/pdf/1902.10859.pdf">Guo et al, 2019</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MobileFaceNet</span></code>: Efficient CNNs for accurate real time face verification on mobile devices (<a class="reference external" href="https://arxiv.org/ftp/arxiv/papers/1804/1804.07573.pdf">Chen et al, 2018</a>)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MobileNet</span></code>: Efficient convolutional neural networks for mobile vision applications (<a class="reference external" href="https://arxiv.org/pdf/1704.04861v1.pdf">Howard et al, 2017</a>)</p></li>
+</ul>
+</div>
+</div>
 <div class="section" id="contributions">
-<h1>Contributions<a class="headerlink" href="#contributions" title="Permalink to this headline">¶</a></h1>
-<p>Here is how to contribute…</p>
+<h2>Contributions<a class="headerlink" href="#contributions" title="Permalink to this headline">¶</a></h2>
+<p>We are excited for people to add new models and features to Py-Feat. Please see the <a class="reference external" href="https://cosanlab.github.io/feat/content/contribute.html">contribution guides</a>.</p>
 </div>
 <div class="section" id="license">
-<h1>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h1>
-<p>License goes here.</p>
-</div>
-<div class="section" id="references">
-<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
-<p>References goes here</p>
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline">¶</a></h2>
+<p>Py-Feat is under the <a class="reference external" href="https://github.com/cosanlab/feat/blob/master/LICENSE">MIT license</a> but the provided models may have separate licenses. Please cite the corresponding references for the models you’ve used.</p>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
@@ -380,6 +449,7 @@ Installation to Colab or Kaggle is similar and you can install from pip too.</p>
 <div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
+</div>
 </div>
 </div>
 
