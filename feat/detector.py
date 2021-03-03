@@ -443,7 +443,16 @@ class Detector(object):
         if outputFname:
             return True
         else:
-            return init_df
+            return Fex(
+                init_df,
+                filename=inputFname,
+                au_columns=jaanet_AU_presence,
+                emotion_columns=FEAT_EMOTION_COLUMNS,
+                facebox_columns=FEAT_FACEBOX_COLUMNS,
+                landmark_columns=openface_2d_landmark_columns,
+                time_columns=FACET_TIME_COLUMNS,
+                detector="Feat",
+            )
 
     def detect_image(self, inputFname, outputFname=None, verbose=False):
         """Detects FEX from a video file.
