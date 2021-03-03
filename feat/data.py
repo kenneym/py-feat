@@ -1169,8 +1169,7 @@ class Fex(DataFrame):
         return out
 
     def extract_wavelet(self, freq, num_cyc=3, mode="complex", ignore_sessions=False):
-        """Perform feature extraction by convolving with a complex morlet
-        wavelet
+        """Perform feature extraction by convolving with a complex morlet wavelet
 
         Args:
             freq: (float) frequency to extract
@@ -1181,6 +1180,7 @@ class Fex(DataFrame):
                                     by sessions if available.
         Returns:
             convolved: (Fex instance)
+
         """
         wav = wavelet(freq, sampling_freq=self.sampling_freq, num_cyc=num_cyc)
         if self.sessions is None or ignore_sessions:
@@ -1228,9 +1228,9 @@ class Fex(DataFrame):
     def extract_multi_wavelet(
         self, min_freq=0.06, max_freq=0.66, bank=8, *args, **kwargs
     ):
-        """Convolve with a bank of morlet wavelets. Wavelets are equally
-        spaced from min to max frequency. See extract_wavelet for more
-        information and options.
+        """Convolve with a bank of morlet wavelets.
+
+        Wavelets are equally spaced from min to max frequency. See extract_wavelet for more information and options.
 
         Args:
             min_freq: (float) minimum frequency to extract
@@ -1256,6 +1256,7 @@ class Fex(DataFrame):
 
     def extract_boft(self, min_freq=0.06, max_freq=0.66, bank=8, *args, **kwargs):
         """Extract Bag of Temporal features
+
         Args:
             min_freq: maximum frequency of temporal filters
             max_freq: minimum frequency of temporal filters
