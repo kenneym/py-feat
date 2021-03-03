@@ -151,7 +151,7 @@ class Detector(object):
         empty_landmarks = pd.DataFrame(predictions, columns=landmark_columns)
         self._empty_landmark = empty_landmarks
 
-        print("Loading au occurence model: ", au_model)
+        print("Loading Action Unit model: ", au_model)
         self.info["au_model"] = au_model
         if au_model:
             if au_model.lower() == "jaanet":
@@ -167,7 +167,7 @@ class Detector(object):
         empty_au_occurs = pd.DataFrame(predictions, columns=auoccur_columns)
         self._empty_auoccurence = empty_au_occurs
 
-        print("Loading emotion model: ", emotion_model)
+        print("Loading Emotion model: ", emotion_model)
         self.info["emotion_model"] = emotion_model
         if emotion_model:
             if emotion_model.lower() == "fer":
@@ -464,7 +464,7 @@ class Detector(object):
             Fex: Prediction results dataframe if outputFname is None. Returns True if outputFname is specified.
         """
         assert (
-            type(inputFname) == str or type(inputFname) == list
+            type(inputFname) == str or type(inputFname) == list or type(inputFname) == np.ndarray
         ), "inputFname must be a string path to image or list of image paths"
         if type(inputFname) == str:
             inputFname = [inputFname]
