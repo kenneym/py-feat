@@ -177,9 +177,9 @@ class FexSeries(Series):
 
 
 class Fex(DataFrame):
-    """Fex is a class to represent facial expression (Fex) data. It is essentially
-        an enhanced pandas df, with extra attributes and methods. Methods
-        always return a new design matrix instance.
+    """Fex is a class to represent facial expression (Fex) data
+    
+    Fex class is  an enhanced pandas dataframe, with extra attributes and methods to help with facial expression data analysis.
 
     Args:
         filename: (str, optional) path to file
@@ -193,9 +193,7 @@ class Fex(DataFrame):
                   n_samples elements; defaults to None
     """
 
-    # __metaclass__  = abc.ABCMeta
-
-    # Need to specify attributes for pandas.
+    # you MUST specify attributes to work with pandas.
     _metadata = [
         "au_columns",
         "emotion_columns",
@@ -370,6 +368,8 @@ class Fex(DataFrame):
     def aus(self):
         """Returns the Action Units data
 
+        Returns Action Unit data using the columns set in fex.au_columns.
+
         Returns:
             DataFrame: Action Units data
         """
@@ -377,6 +377,8 @@ class Fex(DataFrame):
 
     def emotions(self):
         """Returns the emotion data
+
+        Returns emotions data using the columns set in fex.emotion_columns.
 
         Returns:
             DataFrame: emotion data
@@ -386,6 +388,8 @@ class Fex(DataFrame):
     def landmark(self):
         """Returns the landmark data
 
+        Returns landmark data using the columns set in fex.landmark_columns.
+
         Returns:
             DataFrame: landmark data
         """
@@ -394,6 +398,8 @@ class Fex(DataFrame):
     def input(self):
         """Returns input column as string
 
+        Returns input data in the "input" column.
+
         Returns:
             string: path to input image
         """
@@ -401,6 +407,8 @@ class Fex(DataFrame):
 
     def landmark_x(self):
         """Returns the x landmarks.
+
+        Returns the x-coordinates for facial landmarks looking for "x" in fex.landmark_columns.
 
         Returns:
             DataFrame: x landmarks.
@@ -412,6 +420,8 @@ class Fex(DataFrame):
     def landmark_y(self):
         """Returns the y landmarks.
 
+        Returns the y-coordinates for facial landmarks looking for "y" in fex.landmark_columns.
+
         Returns:
             DataFrame: y landmarks.
         """
@@ -421,6 +431,8 @@ class Fex(DataFrame):
     def facebox(self):
         """Returns the facebox data
 
+        Returns the facebox data using fex.facebox_columns.
+
         Returns:
             DataFrame: facebox data
         """
@@ -428,6 +440,8 @@ class Fex(DataFrame):
 
     def time(self):
         """Returns the time data
+
+        Returns the time information using fex.time_columns.
 
         Returns:
             DataFrame: time data
@@ -437,6 +451,8 @@ class Fex(DataFrame):
     def design(self):
         """Returns the design data
 
+        Returns the study design information using columns in fex.design_columns.
+
         Returns:
             DataFrame: time data
         """
@@ -444,6 +460,14 @@ class Fex(DataFrame):
 
     def read_file(self, *args, **kwargs):
         """Loads file into FEX class
+
+        This function checks the detector set in fex.detector and calls the appropriate read function that helps utilize functionalities of Feat. 
+
+        Available detectors include:
+            FACET
+            OpenFace
+            Affectiva
+            Feat
 
         Returns:
             DataFrame: Fex class
@@ -460,7 +484,10 @@ class Fex(DataFrame):
             print("Must specifiy which detector [Feat, FACET, OpenFace, or Affectiva]")
 
     def info(self):
-        """Print class meta data."""
+        """Print all meta data of fex
+        
+        Loops through metadata set in self._metadata and prints out the information.
+        """
         attr_list = []
         for name in self._metadata:
             attr_list.append(name + ": " + str(getattr(self, name, None)) + "\n")
@@ -468,6 +495,14 @@ class Fex(DataFrame):
 
     ###   Class Methods   ###
     def read_feat(self, filename=None, *args, **kwargs):
+        """Reads facial expression detection results from Feat Detector
+
+        Args:
+            filename (string, optional): Path to file. Defaults to None.
+
+        Returns:
+            Fex
+        """        
         # Check if filename exists in metadata.
         if not filename:
             try:
@@ -478,7 +513,14 @@ class Fex(DataFrame):
         return result
 
     def read_facet(self, filename=None, *args, **kwargs):
-        # Check if filename exists in metadata.
+        """Reads facial expression detection results from FACET 
+
+        Args:
+            filename (string, optional): Path to file. Defaults to None.
+
+        Returns:
+            Fex
+        """  
         if not filename:
             try:
                 filename = self.filename
@@ -492,6 +534,14 @@ class Fex(DataFrame):
         return result
 
     def read_openface(self, filename=None, *args, **kwargs):
+        """Reads facial expression detection results from OpenFace 
+
+        Args:
+            filename (string, optional): Path to file. Defaults to None.
+
+        Returns:
+            Fex
+        """  
         if not filename:
             try:
                 filename = self.filename
@@ -505,6 +555,14 @@ class Fex(DataFrame):
         return result
 
     def read_affectiva(self, filename=None, *args, **kwargs):
+        """Reads facial expression detection results from Affectiva 
+
+        Args:
+            filename (string, optional): Path to file. Defaults to None.
+
+        Returns:
+            Fex
+        """  
         if not filename:
             try:
                 filename = self.filename
@@ -642,7 +700,9 @@ class Fex(DataFrame):
         return ttest_1samp(self, popmean)
 
     def predict(self, X, y, model=LinearRegression, *args, **kwargs):
-        """[summary]
+        """Predicts y from X using a sklearn model.
+
+        Predict a variable of interest y using your model of choice from X, which can be a list of columns of the Fex instance or a dataframe.
 
         Args:
             X (list or DataFrame): List of column names or dataframe to be used as features for prediction
@@ -1521,10 +1581,14 @@ class Fex(DataFrame):
         """Plots detection results by Feat.
 
         Args:
+            draw_landmarks (bool, optional): Whether to draw landmarks. Defaults to True.
+            draw_facelines (bool, optional): Whether to draw face lines. Defaults to True.
+            muscle (bool, optional): Whether to draw muscle activations. Defaults to False.
 
         Returns:
-            ax
-        """
+            axes: handle to plot
+        """        
+
         from PIL import Image
         import matplotlib.pyplot as plt
         from matplotlib.patches import Rectangle

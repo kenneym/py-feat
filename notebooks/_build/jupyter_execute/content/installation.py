@@ -5,7 +5,7 @@
 Open the current notebook in Google Colab and run the cell below to install Py-Feat. Make sure to `Restart Runtime` so that the installation is recognized. 
 
 # Install Py-Feat from source.
-!git clone https://github.com/cosanlab/feat.git`  
+!git clone https://github.com/cosanlab/feat.git  
 !cd feat && pip install -q -r requirements.txt
 !cd feat && pip install -q -e . 
 !cd feat && python bin/download_models.py

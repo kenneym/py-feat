@@ -338,18 +338,41 @@
 <dl class="py method">
 <dt id="feat.detector.Detector.detect_aus">
 <code class="sig-name descname">detect_aus</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">landmarks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.detector.Detector.detect_aus" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Detect Action Units from image or video frame</p>
+<p>Detect Action units from a frame (loaded image or frame of video).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>frame (array): image loaded in array format (n, m, 3)
+landmarks (array): 68 landmarks used to localize face.</p>
+</dd>
+<dt>Returns:</dt><dd><p>array: Action Unit predictions</p>
+</dd>
+<dt>Examples: </dt><dd><p>&gt;&gt; import cv2
+&gt;&gt; frame = cv2.imread(imgfile)
+&gt;&gt; from feat import Detector
+&gt;&gt; detector = Detector()        
+&gt;&gt; detector.detect_aus(frame)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="feat.detector.Detector.detect_emotions">
 <code class="sig-name descname">detect_emotions</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">facebox</span></em>, <em class="sig-param"><span class="n">landmarks</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.detector.Detector.detect_emotions" title="Permalink to this definition">¶</a></dt>
-<dd><p>Detect emotions.</p>
+<dd><p>Detect emotions from image or video frame</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>frame ([type]): [description]
 facebox ([type]): [description]
 landmarks ([type]): [description]</p>
 </dd>
-<dt>Returns:</dt><dd><p>[type]: [description]</p>
+<dt>Returns:</dt><dd><p>array: Action Unit predictions</p>
+</dd>
+<dt>Examples: </dt><dd><p>&gt;&gt; import cv2
+&gt;&gt; frame = cv2.imread(imgfile)
+&gt;&gt; from feat import Detector
+&gt;&gt; detector = Detector()        
+&gt;&gt; detected_faces = detector.detect_faces(frame)
+&gt;&gt; detected_landmarks = detector.detect_landmarks(frame, detected_faces)
+&gt;&gt; detector.detect_emotions(frame, detected_faces, detected_landmarks)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -357,7 +380,20 @@ landmarks ([type]): [description]</p>
 <dl class="py method">
 <dt id="feat.detector.Detector.detect_faces">
 <code class="sig-name descname">detect_faces</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.detector.Detector.detect_faces" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Detect faces from image or video frame</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>frame (array): image array</p>
+</dd>
+<dt>Returns:</dt><dd><p>array: face detection results (x, y, width, height)</p>
+</dd>
+<dt>Examples: </dt><dd><p>&gt;&gt; import cv2
+&gt;&gt; frame = cv2.imread(imgfile)
+&gt;&gt; from feat import Detector
+&gt;&gt; detector = Detector()        
+&gt;&gt; detector.detect_faces(frame)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="feat.detector.Detector.detect_image">
@@ -377,7 +413,22 @@ outputFname (str, optional): Path to output file. Defaults to None.</p>
 <dl class="py method">
 <dt id="feat.detector.Detector.detect_landmarks">
 <code class="sig-name descname">detect_landmarks</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">frame</span></em>, <em class="sig-param"><span class="n">detected_faces</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.detector.Detector.detect_landmarks" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Detect landmarks from image or video frame</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>frame (array): image array
+detected_faces (array):</p>
+</dd>
+<dt>Returns:</dt><dd><p>list: x and y landmark coordinates (1,68,2)</p>
+</dd>
+<dt>Examples: </dt><dd><p>&gt;&gt; import cv2
+&gt;&gt; frame = cv2.imread(imgfile)
+&gt;&gt; from feat import Detector
+&gt;&gt; detector = Detector()
+&gt;&gt; detected_faces = detector.detect_faces(frame)        
+&gt;&gt; detector.detect_landmarks(frame, detected_faces)</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="feat.detector.Detector.detect_video">
@@ -422,10 +473,9 @@ counter (int, str, default=0): Index used for the prediction results dataframe.<
 <dt id="feat.data.Fex">
 <em class="property">class </em><code class="sig-prename descclassname">feat.data.</code><code class="sig-name descname">Fex</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.core.frame.DataFrame</span></code></p>
+<p>Fex is a class to represent facial expression (Fex) data</p>
+<p>Fex class is  an enhanced pandas dataframe, with extra attributes and methods to help with facial expression data analysis.</p>
 <dl>
-<dt>Fex is a class to represent facial expression (Fex) data. It is essentially</dt><dd><p>an enhanced pandas df, with extra attributes and methods. Methods
-always return a new design matrix instance.</p>
-</dd>
 <dt>Args:</dt><dd><p>filename: (str, optional) path to file
 detector: (str, optional) name of software used to extract Fex. (Feat, FACET, OpenFace, or Affectiva)
 sampling_freq (float, optional): sampling rate of each row in Hz;</p>
@@ -459,6 +509,7 @@ axis: ([0,1]) Axis to append. Rows=0, Cols=1</p>
 <dt id="feat.data.Fex.aus">
 <code class="sig-name descname">aus</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.aus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the Action Units data</p>
+<p>Returns Action Unit data using the columns set in fex.au_columns.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>DataFrame: Action Units data</p>
 </dd>
@@ -568,6 +619,7 @@ n_components: (int) number of components. If None then retain</p>
 <dt id="feat.data.Fex.design">
 <code class="sig-name descname">design</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.design" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the design data</p>
+<p>Returns the study design information using columns in fex.design_columns.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>DataFrame: time data</p>
 </dd>
@@ -608,6 +660,7 @@ n_components: (int) number of components. If None then retain</p>
 <dt id="feat.data.Fex.emotions">
 <code class="sig-name descname">emotions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.emotions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the emotion data</p>
+<p>Returns emotions data using the columns set in fex.emotion_columns.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>DataFrame: emotion data</p>
 </dd>
@@ -741,6 +794,7 @@ mode: (str) feature to extract, e.g.,</p>
 <dt id="feat.data.Fex.facebox">
 <code class="sig-name descname">facebox</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.facebox" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the facebox data</p>
+<p>Returns the facebox data using fex.facebox_columns.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>DataFrame: facebox data</p>
 </dd>
@@ -750,13 +804,15 @@ mode: (str) feature to extract, e.g.,</p>
 <dl class="py method">
 <dt id="feat.data.Fex.info">
 <code class="sig-name descname">info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.info" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print class meta data.</p>
+<dd><p>Print all meta data of fex</p>
+<p>Loops through metadata set in self._metadata and prints out the information.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="feat.data.Fex.input">
 <code class="sig-name descname">input</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.input" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns input column as string</p>
+<p>Returns input data in the “input” column.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>string: path to input image</p>
 </dd>
@@ -777,6 +833,7 @@ mode: (str) feature to extract, e.g.,</p>
 <dt id="feat.data.Fex.landmark">
 <code class="sig-name descname">landmark</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.landmark" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the landmark data</p>
+<p>Returns landmark data using the columns set in fex.landmark_columns.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>DataFrame: landmark data</p>
 </dd>
@@ -787,6 +844,7 @@ mode: (str) feature to extract, e.g.,</p>
 <dt id="feat.data.Fex.landmark_x">
 <code class="sig-name descname">landmark_x</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.landmark_x" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the x landmarks.</p>
+<p>Returns the x-coordinates for facial landmarks looking for “x” in fex.landmark_columns.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>DataFrame: x landmarks.</p>
 </dd>
@@ -797,6 +855,7 @@ mode: (str) feature to extract, e.g.,</p>
 <dt id="feat.data.Fex.landmark_y">
 <code class="sig-name descname">landmark_y</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.landmark_y" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the y landmarks.</p>
+<p>Returns the y-coordinates for facial landmarks looking for “y” in fex.landmark_columns.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>DataFrame: y landmarks.</p>
 </dd>
@@ -812,9 +871,12 @@ mode: (str) feature to extract, e.g.,</p>
 <dt id="feat.data.Fex.plot_detections">
 <code class="sig-name descname">plot_detections</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">draw_landmarks</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">draw_facelines</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">muscle</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.plot_detections" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plots detection results by Feat.</p>
-<p>Args:</p>
 <dl class="simple">
-<dt>Returns:</dt><dd><p>ax</p>
+<dt>Args:</dt><dd><p>draw_landmarks (bool, optional): Whether to draw landmarks. Defaults to True.
+draw_facelines (bool, optional): Whether to draw face lines. Defaults to True.
+muscle (bool, optional): Whether to draw muscle activations. Defaults to False.</p>
+</dd>
+<dt>Returns:</dt><dd><p>axes: handle to plot</p>
 </dd>
 </dl>
 </dd></dl>
@@ -822,7 +884,8 @@ mode: (str) feature to extract, e.g.,</p>
 <dl class="py method">
 <dt id="feat.data.Fex.predict">
 <code class="sig-name descname">predict</code><span class="sig-paren">(</span><em class="sig-param">X</em>, <em class="sig-param">y</em>, <em class="sig-param">model=&lt;class 'sklearn.linear_model._base.LinearRegression'&gt;</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.predict" title="Permalink to this definition">¶</a></dt>
-<dd><p>[summary]</p>
+<dd><p>Predicts y from X using a sklearn model.</p>
+<p>Predict a variable of interest y using your model of choice from X, which can be a list of columns of the Fex instance or a dataframe.</p>
 <dl class="simple">
 <dt>Args:</dt><dd><p>X (list or DataFrame): List of column names or dataframe to be used as features for prediction
 y (string or array): y values to be predicted
@@ -837,23 +900,50 @@ model (class, optional): Any sklearn model. Defaults to LinearRegression.
 <dl class="py method">
 <dt id="feat.data.Fex.read_affectiva">
 <code class="sig-name descname">read_affectiva</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.read_affectiva" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Reads facial expression detection results from Affectiva</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (string, optional): Path to file. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Fex</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="feat.data.Fex.read_facet">
 <code class="sig-name descname">read_facet</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.read_facet" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Reads facial expression detection results from FACET</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (string, optional): Path to file. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Fex</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="feat.data.Fex.read_feat">
 <code class="sig-name descname">read_feat</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.read_feat" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Reads facial expression detection results from Feat Detector</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (string, optional): Path to file. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Fex</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="feat.data.Fex.read_file">
 <code class="sig-name descname">read_file</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.read_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Loads file into FEX class</p>
+<p>This function checks the detector set in fex.detector and calls the appropriate read function that helps utilize functionalities of Feat.</p>
 <dl class="simple">
+<dt>Available detectors include:</dt><dd><p>FACET
+OpenFace
+Affectiva
+Feat</p>
+</dd>
 <dt>Returns:</dt><dd><p>DataFrame: Fex class</p>
 </dd>
 </dl>
@@ -862,7 +952,14 @@ model (class, optional): Any sklearn model. Defaults to LinearRegression.
 <dl class="py method">
 <dt id="feat.data.Fex.read_openface">
 <code class="sig-name descname">read_openface</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">filename</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.read_openface" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Reads facial expression detection results from OpenFace</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (string, optional): Path to file. Defaults to None.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Fex</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt id="feat.data.Fex.rectification">
@@ -896,6 +993,7 @@ fit_intercept (bool): Whether to add intercept before fitting. Defaults to True.
 <dt id="feat.data.Fex.time">
 <code class="sig-name descname">time</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#feat.data.Fex.time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the time data</p>
+<p>Returns the time information using fex.time_columns.</p>
 <dl class="simple">
 <dt>Returns:</dt><dd><p>DataFrame: time data</p>
 </dd>

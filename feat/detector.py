@@ -203,6 +203,21 @@ class Detector(object):
         return self.info[i]
 
     def detect_faces(self, frame):
+        """Detect faces from image or video frame
+
+        Args:
+            frame (array): image array
+
+        Returns:
+            array: face detection results (x, y, width, height)
+
+        Examples: 
+            >> import cv2
+            >> frame = cv2.imread(imgfile)
+            >> from feat import Detector
+            >> detector = Detector()        
+            >> detector.detect_faces(frame)
+        """        
         # suppose frame=cv2.imread(imgname)
         height, width, _ = frame.shape
         faces = self.face_detector(frame)
@@ -212,6 +227,23 @@ class Detector(object):
         return faces
 
     def detect_landmarks(self, frame, detected_faces):
+        """Detect landmarks from image or video frame
+        
+        Args:
+            frame (array): image array
+            detected_faces (array): 
+
+        Returns:
+            list: x and y landmark coordinates (1,68,2)
+
+        Examples: 
+            >> import cv2
+            >> frame = cv2.imread(imgfile)
+            >> from feat import Detector
+            >> detector = Detector()
+            >> detected_faces = detector.detect_faces(frame)        
+            >> detector.detect_landmarks(frame, detected_faces)
+        """        
         mean = np.asarray([0.485, 0.456, 0.406])
         std = np.asarray([0.229, 0.224, 0.225])
         self.landmark_detector.eval()
@@ -288,6 +320,24 @@ class Detector(object):
         return landmark_list
 
     def detect_aus(self, frame, landmarks):
+        """Detect Action Units from image or video frame
+
+        Detect Action units from a frame (loaded image or frame of video).
+
+        Args:
+            frame (array): image loaded in array format (n, m, 3)
+            landmarks (array): 68 landmarks used to localize face.
+
+        Returns:
+            array: Action Unit predictions
+
+        Examples: 
+            >> import cv2
+            >> frame = cv2.imread(imgfile)
+            >> from feat import Detector
+            >> detector = Detector()        
+            >> detector.detect_aus(frame)
+        """        
         # Assume that the Raw landmark is given in the format (n_land,2)
         landmarks = np.transpose(landmarks)
         if landmarks.shape[-1] == 68:
@@ -295,7 +345,7 @@ class Detector(object):
         return self.au_model.detect_au(frame, landmarks)
 
     def detect_emotions(self, frame, facebox, landmarks):
-        """Detect emotions.
+        """Detect emotions from image or video frame
 
         Args:
             frame ([type]): [description]
@@ -303,7 +353,16 @@ class Detector(object):
             landmarks ([type]): [description]
 
         Returns:
-            [type]: [description]
+            array: Action Unit predictions
+
+        Examples: 
+            >> import cv2
+            >> frame = cv2.imread(imgfile)
+            >> from feat import Detector
+            >> detector = Detector()        
+            >> detected_faces = detector.detect_faces(frame)
+            >> detected_landmarks = detector.detect_landmarks(frame, detected_faces)
+            >> detector.detect_emotions(frame, detected_faces, detected_landmarks)
         """        
         if self.info["emotion_model"].lower() == 'fer':
             landmarks = np.transpose(landmarks)
