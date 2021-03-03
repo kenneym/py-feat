@@ -104,11 +104,6 @@
    Installation example
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="installation.html#installation-example-code">
-   Installation example code
-  </a>
- </li>
 </ul>
 <p class="caption collapsible-parent">
  <span class="caption-text">
@@ -122,8 +117,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="#how-to-use-the-feat-detector-class">
-   How to use the Feat Detector class.
+  <a class="reference internal" href="#detecting-facial-expressions-images-with-many-faces">
+   Detecting facial expressions images with many faces.
   </a>
  </li>
  <li class="toctree-l1">
@@ -293,11 +288,60 @@
   <a class="reference internal nav-link" href="#">
    Detector
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#how-to-use-the-feat-detector-class">
+     How to use the Feat Detector class.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#detecting-facial-expressions-from-images">
+     Detecting facial expressions from images.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualizing-detection-results">
+     Visualizing detection results.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#accessing-face-expression-columns-of-interest">
+     Accessing face expression columns of interest.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#detecting-facial-expressions-and-saving-to-a-file">
+     Detecting facial expressions and saving to a file.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#loading-detection-results-from-saved-file">
+     Loading detection results from saved file.
+    </a>
+   </li>
+  </ul>
  </li>
  <li class="toc-h1 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#how-to-use-the-feat-detector-class">
-   How to use the Feat Detector class.
+  <a class="reference internal nav-link" href="#detecting-facial-expressions-images-with-many-faces">
+   Detecting facial expressions images with many faces.
   </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#visualize-multiple-faces-in-a-single-image">
+     Visualize multiple faces in a single image.
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#detecting-facial-expressions-from-multiple-images">
+     Detecting facial expressions from multiple images
+    </a>
+   </li>
+   <li class="toc-h2 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#detecting-facial-expressions-from-videos">
+     Detecting facial expressions from videos.
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -313,10 +357,1474 @@
                 
   <div class="section" id="detector">
 <h1>Detector<a class="headerlink" href="#detector" title="Permalink to this headline">¶</a></h1>
-</div>
 <div class="section" id="how-to-use-the-feat-detector-class">
-<h1>How to use the Feat Detector class.<a class="headerlink" href="#how-to-use-the-feat-detector-class" title="Permalink to this headline">¶</a></h1>
+<h2>How to use the Feat Detector class.<a class="headerlink" href="#how-to-use-the-feat-detector-class" title="Permalink to this headline">¶</a></h2>
 <p><em>Written by Jin Hyun Cheong</em></p>
+<p>Here is an example of how to use the <code class="docutils literal notranslate"><span class="pre">Detector</span></code> class to detect faces, facial landmarks, Action Units, and emotions, from face images or videos.</p>
+</div>
+<div class="section" id="detecting-facial-expressions-from-images">
+<h2>Detecting facial expressions from images.<a class="headerlink" href="#detecting-facial-expressions-from-images" title="Permalink to this headline">¶</a></h2>
+<p>First, load the detector class. You can specify which models you want to use.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">feat</span> <span class="kn">import</span> <span class="n">Detector</span>
+<span class="n">face_model</span> <span class="o">=</span> <span class="s2">&quot;retinaface&quot;</span>
+<span class="n">landmark_model</span> <span class="o">=</span> <span class="s2">&quot;mobilenet&quot;</span>
+<span class="n">au_model</span> <span class="o">=</span> <span class="s2">&quot;jaanet&quot;</span>
+<span class="n">emotion_model</span> <span class="o">=</span> <span class="s2">&quot;fer&quot;</span>
+<span class="n">detector</span> <span class="o">=</span> <span class="n">Detector</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading Face Detection model:  retinaface
+Loading Face Landmark model:  MobileNet
+Loading au occurence model:  jaanet
+Loading emotion model:  fer
+</pre></div>
+</div>
+</div>
+</div>
+<p>Find the file you want to process. In our case, we’ll use our test image <code class="docutils literal notranslate"><span class="pre">input.jpg</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the file you want to process.</span>
+<span class="kn">from</span> <span class="nn">feat.tests.utils</span> <span class="kn">import</span> <span class="n">get_test_data_path</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="n">test_data_dir</span> <span class="o">=</span> <span class="n">get_test_data_path</span><span class="p">()</span>
+<span class="n">test_image</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">test_data_dir</span><span class="p">,</span> <span class="s2">&quot;input.jpg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>Here is what our test image looks like.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">PIL</span> <span class="kn">import</span> <span class="n">Image</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">test_image</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">im</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/detector_5_0.png" src="../_images/detector_5_0.png" />
+</div>
+</div>
+<p>Now we use our initialized <code class="docutils literal notranslate"><span class="pre">detector</span></code> instance to make predictions with the <code class="docutils literal notranslate"><span class="pre">detect_image()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_prediction</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">detect_image</span><span class="p">(</span><span class="n">test_image</span><span class="p">)</span>
+<span class="c1"># Show results</span>
+<span class="n">image_prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/jcheong/packages/feat/feat/emo_detectors/ferNet/ferNet_test.py:147: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  pred_emo_softmax = nn.functional.softmax(
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>frame</th>
+      <th>FaceRectX</th>
+      <th>FaceRectY</th>
+      <th>FaceRectWidth</th>
+      <th>FaceRectHeight</th>
+      <th>FaceScore</th>
+      <th>x_0</th>
+      <th>x_1</th>
+      <th>x_2</th>
+      <th>x_3</th>
+      <th>...</th>
+      <th>AU23</th>
+      <th>AU24</th>
+      <th>anger</th>
+      <th>disgust</th>
+      <th>fear</th>
+      <th>happiness</th>
+      <th>sadness</th>
+      <th>surprise</th>
+      <th>neutral</th>
+      <th>input</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>196.976852</td>
+      <td>140.997742</td>
+      <td>173.810471</td>
+      <td>257.639343</td>
+      <td>0.999681</td>
+      <td>192.864591</td>
+      <td>191.586714</td>
+      <td>192.874615</td>
+      <td>197.39479</td>
+      <td>...</td>
+      <td>0.002872</td>
+      <td>0.000004</td>
+      <td>0.001737</td>
+      <td>0.017439</td>
+      <td>0.000756</td>
+      <td>0.94757</td>
+      <td>0.000364</td>
+      <td>0.000533</td>
+      <td>0.031602</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 162 columns</p>
+</div></div></div>
+</div>
+<p>The output is a <code class="docutils literal notranslate"><span class="pre">Fex</span></code> class instance which allows you to run the built-in methods for <code class="docutils literal notranslate"><span class="pre">Fex</span></code>.</p>
+</div>
+<div class="section" id="visualizing-detection-results">
+<h2>Visualizing detection results.<a class="headerlink" href="#visualizing-detection-results" title="Permalink to this headline">¶</a></h2>
+<p>For example, you can easily plot the detection results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_prediction</span><span class="o">.</span><span class="n">plot_detections</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/detector_9_0.png" src="../_images/detector_9_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="accessing-face-expression-columns-of-interest">
+<h2>Accessing face expression columns of interest.<a class="headerlink" href="#accessing-face-expression-columns-of-interest" title="Permalink to this headline">¶</a></h2>
+<p>You can also access the columns of interests (AUs, emotion) quickly.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_prediction</span><span class="o">.</span><span class="n">facebox</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>FaceRectX</th>
+      <th>FaceRectY</th>
+      <th>FaceRectWidth</th>
+      <th>FaceRectHeight</th>
+      <th>FaceScore</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>196.976852</td>
+      <td>140.997742</td>
+      <td>173.810471</td>
+      <td>257.639343</td>
+      <td>0.999681</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_prediction</span><span class="o">.</span><span class="n">aus</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>AU01</th>
+      <th>AU02</th>
+      <th>AU04</th>
+      <th>AU06</th>
+      <th>AU07</th>
+      <th>AU10</th>
+      <th>AU12</th>
+      <th>AU14</th>
+      <th>AU15</th>
+      <th>AU17</th>
+      <th>AU23</th>
+      <th>AU24</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.16389</td>
+      <td>0.990565</td>
+      <td>0.001981</td>
+      <td>0.827827</td>
+      <td>0.895377</td>
+      <td>0.654377</td>
+      <td>0.995468</td>
+      <td>0.041832</td>
+      <td>0.324254</td>
+      <td>0.000614</td>
+      <td>0.002872</td>
+      <td>0.000004</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_prediction</span><span class="o">.</span><span class="n">emotions</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>anger</th>
+      <th>disgust</th>
+      <th>fear</th>
+      <th>happiness</th>
+      <th>sadness</th>
+      <th>surprise</th>
+      <th>neutral</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.001737</td>
+      <td>0.017439</td>
+      <td>0.000756</td>
+      <td>0.94757</td>
+      <td>0.000364</td>
+      <td>0.000533</td>
+      <td>0.031602</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+</div>
+<div class="section" id="detecting-facial-expressions-and-saving-to-a-file">
+<h2>Detecting facial expressions and saving to a file.<a class="headerlink" href="#detecting-facial-expressions-and-saving-to-a-file" title="Permalink to this headline">¶</a></h2>
+<p>You can also output the results into file by specifying the <code class="docutils literal notranslate"><span class="pre">outputFname</span></code>. The detector will return <code class="docutils literal notranslate"><span class="pre">True</span></code> when it’s finished.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">detector</span><span class="o">.</span><span class="n">detect_image</span><span class="p">(</span><span class="n">test_image</span><span class="p">,</span> <span class="n">outputFname</span> <span class="o">=</span> <span class="s2">&quot;output.csv&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/jcheong/packages/feat/feat/emo_detectors/ferNet/ferNet_test.py:147: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  pred_emo_softmax = nn.functional.softmax(
+</pre></div>
+</div>
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>True
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="loading-detection-results-from-saved-file">
+<h2>Loading detection results from saved file.<a class="headerlink" href="#loading-detection-results-from-saved-file" title="Permalink to this headline">¶</a></h2>
+<p>The outputs can be loaded using our <code class="docutils literal notranslate"><span class="pre">read_feat()</span></code> function or a simple Pandas <code class="docutils literal notranslate"><span class="pre">read_csv()</span></code>. We recommend using <code class="docutils literal notranslate"><span class="pre">read_feat()</span></code> because that will allow you to use the full suite of Feat functionalities more easily.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">feat.utils</span> <span class="kn">import</span> <span class="n">read_feat</span>
+<span class="n">image_prediction</span> <span class="o">=</span> <span class="n">read_feat</span><span class="p">(</span><span class="s2">&quot;output.csv&quot;</span><span class="p">)</span>
+<span class="c1"># Show results</span>
+<span class="n">image_prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>frame</th>
+      <th>FaceRectX</th>
+      <th>FaceRectY</th>
+      <th>FaceRectWidth</th>
+      <th>FaceRectHeight</th>
+      <th>FaceScore</th>
+      <th>x_0</th>
+      <th>x_1</th>
+      <th>x_2</th>
+      <th>x_3</th>
+      <th>...</th>
+      <th>AU23</th>
+      <th>AU24</th>
+      <th>anger</th>
+      <th>disgust</th>
+      <th>fear</th>
+      <th>happiness</th>
+      <th>sadness</th>
+      <th>surprise</th>
+      <th>neutral</th>
+      <th>input</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>196.976852</td>
+      <td>140.997742</td>
+      <td>173.810471</td>
+      <td>257.639343</td>
+      <td>0.999681</td>
+      <td>192.864591</td>
+      <td>191.586714</td>
+      <td>192.874615</td>
+      <td>197.39479</td>
+      <td>...</td>
+      <td>0.002872</td>
+      <td>0.000004</td>
+      <td>0.001737</td>
+      <td>0.017439</td>
+      <td>0.000756</td>
+      <td>0.94757</td>
+      <td>0.000364</td>
+      <td>0.000533</td>
+      <td>0.031602</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 162 columns</p>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="n">image_prediction</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s2">&quot;output.csv&quot;</span><span class="p">)</span>
+<span class="c1"># Show results</span>
+<span class="n">image_prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>frame</th>
+      <th>FaceRectX</th>
+      <th>FaceRectY</th>
+      <th>FaceRectWidth</th>
+      <th>FaceRectHeight</th>
+      <th>FaceScore</th>
+      <th>x_0</th>
+      <th>x_1</th>
+      <th>x_2</th>
+      <th>x_3</th>
+      <th>...</th>
+      <th>AU23</th>
+      <th>AU24</th>
+      <th>anger</th>
+      <th>disgust</th>
+      <th>fear</th>
+      <th>happiness</th>
+      <th>sadness</th>
+      <th>surprise</th>
+      <th>neutral</th>
+      <th>input</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>196.976852</td>
+      <td>140.997742</td>
+      <td>173.810471</td>
+      <td>257.639343</td>
+      <td>0.999681</td>
+      <td>192.864591</td>
+      <td>191.586714</td>
+      <td>192.874615</td>
+      <td>197.39479</td>
+      <td>...</td>
+      <td>0.002872</td>
+      <td>0.000004</td>
+      <td>0.001737</td>
+      <td>0.017439</td>
+      <td>0.000756</td>
+      <td>0.94757</td>
+      <td>0.000364</td>
+      <td>0.000533</td>
+      <td>0.031602</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 162 columns</p>
+</div></div></div>
+</div>
+</div>
+</div>
+<div class="section" id="detecting-facial-expressions-images-with-many-faces">
+<h1>Detecting facial expressions images with many faces.<a class="headerlink" href="#detecting-facial-expressions-images-with-many-faces" title="Permalink to this headline">¶</a></h1>
+<p>Feat’s Detector can find multiple faces in a single image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">test_image</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">test_data_dir</span><span class="p">,</span> <span class="s2">&quot;tim-mossholder-hOF1bWoet_Q-unsplash.jpg&quot;</span><span class="p">))</span>
+<span class="n">image_prediction</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">detect_image</span><span class="p">(</span><span class="n">test_image</span><span class="p">)</span>
+<span class="c1"># Show results</span>
+<span class="n">image_prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/jcheong/packages/feat/feat/emo_detectors/ferNet/ferNet_test.py:147: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  pred_emo_softmax = nn.functional.softmax(
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>frame</th>
+      <th>FaceRectX</th>
+      <th>FaceRectY</th>
+      <th>FaceRectWidth</th>
+      <th>FaceRectHeight</th>
+      <th>FaceScore</th>
+      <th>x_0</th>
+      <th>x_1</th>
+      <th>x_2</th>
+      <th>x_3</th>
+      <th>...</th>
+      <th>AU23</th>
+      <th>AU24</th>
+      <th>anger</th>
+      <th>disgust</th>
+      <th>fear</th>
+      <th>happiness</th>
+      <th>sadness</th>
+      <th>surprise</th>
+      <th>neutral</th>
+      <th>input</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0</td>
+      <td>683.844116</td>
+      <td>288.876495</td>
+      <td>103.788025</td>
+      <td>134.104675</td>
+      <td>0.999768</td>
+      <td>686.784070</td>
+      <td>684.581417</td>
+      <td>683.259731</td>
+      <td>683.543446</td>
+      <td>...</td>
+      <td>0.000047</td>
+      <td>2.072674e-08</td>
+      <td>0.000488</td>
+      <td>0.005617</td>
+      <td>0.000796</td>
+      <td>0.951391</td>
+      <td>0.001863</td>
+      <td>0.004160</td>
+      <td>0.035685</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0</td>
+      <td>533.678894</td>
+      <td>309.400024</td>
+      <td>96.237732</td>
+      <td>124.128448</td>
+      <td>0.999421</td>
+      <td>536.352311</td>
+      <td>533.773776</td>
+      <td>532.264484</td>
+      <td>532.354007</td>
+      <td>...</td>
+      <td>0.000067</td>
+      <td>2.451054e-09</td>
+      <td>0.000284</td>
+      <td>0.006320</td>
+      <td>0.001193</td>
+      <td>0.971111</td>
+      <td>0.000716</td>
+      <td>0.000561</td>
+      <td>0.019815</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0</td>
+      <td>316.984406</td>
+      <td>233.779205</td>
+      <td>92.016876</td>
+      <td>126.462952</td>
+      <td>0.999196</td>
+      <td>314.601801</td>
+      <td>315.569317</td>
+      <td>317.556657</td>
+      <td>320.979813</td>
+      <td>...</td>
+      <td>0.000409</td>
+      <td>2.915924e-07</td>
+      <td>0.000121</td>
+      <td>0.002568</td>
+      <td>0.000227</td>
+      <td>0.899846</td>
+      <td>0.001718</td>
+      <td>0.001472</td>
+      <td>0.094047</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0</td>
+      <td>221.297470</td>
+      <td>64.152290</td>
+      <td>85.109238</td>
+      <td>109.057457</td>
+      <td>0.996842</td>
+      <td>221.084806</td>
+      <td>218.956038</td>
+      <td>217.532470</td>
+      <td>217.588805</td>
+      <td>...</td>
+      <td>0.000014</td>
+      <td>1.441462e-08</td>
+      <td>0.000620</td>
+      <td>0.004256</td>
+      <td>0.000250</td>
+      <td>0.903749</td>
+      <td>0.000306</td>
+      <td>0.002786</td>
+      <td>0.088032</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0</td>
+      <td>437.129089</td>
+      <td>213.861359</td>
+      <td>79.529785</td>
+      <td>97.050537</td>
+      <td>0.996773</td>
+      <td>439.015782</td>
+      <td>438.598763</td>
+      <td>439.106142</td>
+      <td>440.473301</td>
+      <td>...</td>
+      <td>0.000018</td>
+      <td>4.327078e-09</td>
+      <td>0.001339</td>
+      <td>0.018785</td>
+      <td>0.000607</td>
+      <td>0.661113</td>
+      <td>0.047018</td>
+      <td>0.000741</td>
+      <td>0.270397</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 162 columns</p>
+</div></div></div>
+</div>
+<div class="section" id="visualize-multiple-faces-in-a-single-image">
+<h2>Visualize multiple faces in a single image.<a class="headerlink" href="#visualize-multiple-faces-in-a-single-image" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_prediction</span><span class="o">.</span><span class="n">plot_detections</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/detector_22_0.png" src="../_images/detector_22_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="detecting-facial-expressions-from-multiple-images">
+<h2>Detecting facial expressions from multiple images<a class="headerlink" href="#detecting-facial-expressions-from-multiple-images" title="Permalink to this headline">¶</a></h2>
+<p>You can also detect facial expressions from a list of images. Just place the path to images in a list and pass it to <code class="docutils literal notranslate"><span class="pre">detect_images</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the file you want to process.</span>
+<span class="kn">from</span> <span class="nn">feat.tests.utils</span> <span class="kn">import</span> <span class="n">get_test_data_path</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">glob</span>
+<span class="n">test_data_dir</span> <span class="o">=</span> <span class="n">get_test_data_path</span><span class="p">()</span>
+<span class="n">test_images</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">test_data_dir</span><span class="p">,</span> <span class="s2">&quot;*.jpg&quot;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">test_images</span><span class="p">)</span>
+
+<span class="n">image_prediction</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">detect_image</span><span class="p">(</span><span class="n">test_images</span><span class="p">)</span>
+<span class="n">image_prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[&#39;/home/jcheong/packages/feat/feat/tests/data/sampler0000.jpg&#39;, &#39;/home/jcheong/packages/feat/feat/tests/data/input.jpg&#39;, &#39;/home/jcheong/packages/feat/feat/tests/data/tim-mossholder-hOF1bWoet_Q-unsplash.jpg&#39;]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/jcheong/packages/feat/feat/emo_detectors/ferNet/ferNet_test.py:147: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  pred_emo_softmax = nn.functional.softmax(
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>frame</th>
+      <th>FaceRectX</th>
+      <th>FaceRectY</th>
+      <th>FaceRectWidth</th>
+      <th>FaceRectHeight</th>
+      <th>FaceScore</th>
+      <th>x_0</th>
+      <th>x_1</th>
+      <th>x_2</th>
+      <th>x_3</th>
+      <th>...</th>
+      <th>AU23</th>
+      <th>AU24</th>
+      <th>anger</th>
+      <th>disgust</th>
+      <th>fear</th>
+      <th>happiness</th>
+      <th>sadness</th>
+      <th>surprise</th>
+      <th>neutral</th>
+      <th>input</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>221.921371</td>
+      <td>451.037781</td>
+      <td>557.324585</td>
+      <td>685.556824</td>
+      <td>0.999933</td>
+      <td>183.711262</td>
+      <td>193.365529</td>
+      <td>208.800660</td>
+      <td>227.631529</td>
+      <td>...</td>
+      <td>0.000367</td>
+      <td>4.590918e-06</td>
+      <td>0.003061</td>
+      <td>0.013231</td>
+      <td>0.000564</td>
+      <td>0.676580</td>
+      <td>0.044113</td>
+      <td>0.002387</td>
+      <td>0.260063</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/sa...</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>196.976852</td>
+      <td>140.997742</td>
+      <td>173.810471</td>
+      <td>257.639343</td>
+      <td>0.999681</td>
+      <td>192.864591</td>
+      <td>191.586714</td>
+      <td>192.874615</td>
+      <td>197.394790</td>
+      <td>...</td>
+      <td>0.002872</td>
+      <td>3.748603e-06</td>
+      <td>0.001737</td>
+      <td>0.017439</td>
+      <td>0.000756</td>
+      <td>0.947570</td>
+      <td>0.000364</td>
+      <td>0.000533</td>
+      <td>0.031602</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>683.844116</td>
+      <td>288.876495</td>
+      <td>103.788025</td>
+      <td>134.104675</td>
+      <td>0.999768</td>
+      <td>686.784070</td>
+      <td>684.581417</td>
+      <td>683.259731</td>
+      <td>683.543446</td>
+      <td>...</td>
+      <td>0.000047</td>
+      <td>2.072674e-08</td>
+      <td>0.000488</td>
+      <td>0.005617</td>
+      <td>0.000796</td>
+      <td>0.951391</td>
+      <td>0.001863</td>
+      <td>0.004160</td>
+      <td>0.035685</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.0</td>
+      <td>533.678894</td>
+      <td>309.400024</td>
+      <td>96.237732</td>
+      <td>124.128448</td>
+      <td>0.999421</td>
+      <td>536.352311</td>
+      <td>533.773776</td>
+      <td>532.264484</td>
+      <td>532.354007</td>
+      <td>...</td>
+      <td>0.000067</td>
+      <td>2.451054e-09</td>
+      <td>0.000284</td>
+      <td>0.006320</td>
+      <td>0.001193</td>
+      <td>0.971111</td>
+      <td>0.000716</td>
+      <td>0.000561</td>
+      <td>0.019815</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.0</td>
+      <td>316.984406</td>
+      <td>233.779205</td>
+      <td>92.016876</td>
+      <td>126.462952</td>
+      <td>0.999196</td>
+      <td>314.601801</td>
+      <td>315.569317</td>
+      <td>317.556657</td>
+      <td>320.979813</td>
+      <td>...</td>
+      <td>0.000409</td>
+      <td>2.915924e-07</td>
+      <td>0.000121</td>
+      <td>0.002568</td>
+      <td>0.000227</td>
+      <td>0.899846</td>
+      <td>0.001718</td>
+      <td>0.001472</td>
+      <td>0.094047</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>0.0</td>
+      <td>221.297470</td>
+      <td>64.152290</td>
+      <td>85.109238</td>
+      <td>109.057457</td>
+      <td>0.996842</td>
+      <td>221.084806</td>
+      <td>218.956038</td>
+      <td>217.532470</td>
+      <td>217.588805</td>
+      <td>...</td>
+      <td>0.000014</td>
+      <td>1.441462e-08</td>
+      <td>0.000620</td>
+      <td>0.004256</td>
+      <td>0.000250</td>
+      <td>0.903749</td>
+      <td>0.000306</td>
+      <td>0.002786</td>
+      <td>0.088032</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>0.0</td>
+      <td>437.129089</td>
+      <td>213.861359</td>
+      <td>79.529785</td>
+      <td>97.050537</td>
+      <td>0.996773</td>
+      <td>439.015782</td>
+      <td>438.598763</td>
+      <td>439.106142</td>
+      <td>440.473301</td>
+      <td>...</td>
+      <td>0.000018</td>
+      <td>4.327078e-09</td>
+      <td>0.001339</td>
+      <td>0.018785</td>
+      <td>0.000607</td>
+      <td>0.661113</td>
+      <td>0.047018</td>
+      <td>0.000741</td>
+      <td>0.270397</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/ti...</td>
+    </tr>
+  </tbody>
+</table>
+<p>7 rows × 162 columns</p>
+</div></div></div>
+</div>
+<p>When you have multiple images, you can still call the plot_detection which will plot results for all input images. If you have a lot of images, we recommend checking one by one using slicing.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_prediction</span><span class="o">.</span><span class="n">plot_detections</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/detector_26_0.png" src="../_images/detector_26_0.png" />
+<img alt="../_images/detector_26_1.png" src="../_images/detector_26_1.png" />
+<img alt="../_images/detector_26_2.png" src="../_images/detector_26_2.png" />
+</div>
+</div>
+<p>You can use the slicing function to plot specific rows in the detection results.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">image_prediction</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">plot_detections</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/detector_28_0.png" src="../_images/detector_28_0.png" />
+</div>
+</div>
+</div>
+<div class="section" id="detecting-facial-expressions-from-videos">
+<h2>Detecting facial expressions from videos.<a class="headerlink" href="#detecting-facial-expressions-from-videos" title="Permalink to this headline">¶</a></h2>
+<p>Detecting facial expressions in videos is also easy by using the <code class="docutils literal notranslate"><span class="pre">detect_video()</span></code> method.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the file you want to process.</span>
+<span class="kn">from</span> <span class="nn">feat.tests.utils</span> <span class="kn">import</span> <span class="n">get_test_data_path</span>
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">glob</span>
+<span class="n">test_data_dir</span> <span class="o">=</span> <span class="n">get_test_data_path</span><span class="p">()</span>
+<span class="n">test_video</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">test_data_dir</span><span class="p">,</span> <span class="s2">&quot;input.mp4&quot;</span><span class="p">)</span>
+
+<span class="n">video_prediction</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">detect_video</span><span class="p">(</span><span class="n">test_video</span><span class="p">)</span>
+<span class="n">video_prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/jcheong/packages/feat/feat/emo_detectors/ferNet/ferNet_test.py:147: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  pred_emo_softmax = nn.functional.softmax(
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>exception occurred
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>frame</th>
+      <th>FaceRectX</th>
+      <th>FaceRectY</th>
+      <th>FaceRectWidth</th>
+      <th>FaceRectHeight</th>
+      <th>FaceScore</th>
+      <th>x_0</th>
+      <th>x_1</th>
+      <th>x_2</th>
+      <th>x_3</th>
+      <th>...</th>
+      <th>AU23</th>
+      <th>AU24</th>
+      <th>anger</th>
+      <th>disgust</th>
+      <th>fear</th>
+      <th>happiness</th>
+      <th>sadness</th>
+      <th>surprise</th>
+      <th>neutral</th>
+      <th>input</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>225.785461</td>
+      <td>79.790741</td>
+      <td>143.439087</td>
+      <td>219.655396</td>
+      <td>0.997335</td>
+      <td>220.742497</td>
+      <td>221.692862</td>
+      <td>224.857535</td>
+      <td>229.261025</td>
+      <td>...</td>
+      <td>0.005269</td>
+      <td>1.499276e-04</td>
+      <td>0.002553</td>
+      <td>0.041428</td>
+      <td>0.000036</td>
+      <td>0.017561</td>
+      <td>0.018628</td>
+      <td>0.001683</td>
+      <td>0.918109</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>1.0</td>
+      <td>224.340897</td>
+      <td>78.703629</td>
+      <td>144.191849</td>
+      <td>219.749008</td>
+      <td>0.997304</td>
+      <td>220.251151</td>
+      <td>221.300561</td>
+      <td>224.537239</td>
+      <td>229.189427</td>
+      <td>...</td>
+      <td>0.000457</td>
+      <td>1.689635e-05</td>
+      <td>0.001981</td>
+      <td>0.031548</td>
+      <td>0.000029</td>
+      <td>0.029420</td>
+      <td>0.016667</td>
+      <td>0.001307</td>
+      <td>0.919048</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2.0</td>
+      <td>224.216888</td>
+      <td>77.929291</td>
+      <td>143.509094</td>
+      <td>219.101410</td>
+      <td>0.997589</td>
+      <td>219.232944</td>
+      <td>220.174571</td>
+      <td>223.311931</td>
+      <td>227.716826</td>
+      <td>...</td>
+      <td>0.000522</td>
+      <td>1.598743e-05</td>
+      <td>0.002754</td>
+      <td>0.038495</td>
+      <td>0.000032</td>
+      <td>0.020972</td>
+      <td>0.017380</td>
+      <td>0.001545</td>
+      <td>0.918821</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>3.0</td>
+      <td>222.698547</td>
+      <td>76.241852</td>
+      <td>143.943573</td>
+      <td>219.770996</td>
+      <td>0.997615</td>
+      <td>217.720875</td>
+      <td>218.875998</td>
+      <td>222.267570</td>
+      <td>226.994234</td>
+      <td>...</td>
+      <td>0.001272</td>
+      <td>4.804263e-06</td>
+      <td>0.002297</td>
+      <td>0.034045</td>
+      <td>0.000032</td>
+      <td>0.020861</td>
+      <td>0.016214</td>
+      <td>0.001443</td>
+      <td>0.925108</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>4.0</td>
+      <td>221.974640</td>
+      <td>75.179489</td>
+      <td>143.789886</td>
+      <td>219.539566</td>
+      <td>0.997622</td>
+      <td>216.369104</td>
+      <td>217.718976</td>
+      <td>221.307682</td>
+      <td>226.181800</td>
+      <td>...</td>
+      <td>0.001141</td>
+      <td>4.706220e-06</td>
+      <td>0.001542</td>
+      <td>0.028211</td>
+      <td>0.000026</td>
+      <td>0.022798</td>
+      <td>0.014205</td>
+      <td>0.001088</td>
+      <td>0.932130</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>68</th>
+      <td>68.0</td>
+      <td>223.307953</td>
+      <td>74.997276</td>
+      <td>144.260864</td>
+      <td>218.014557</td>
+      <td>0.996670</td>
+      <td>221.039651</td>
+      <td>221.099032</td>
+      <td>222.813766</td>
+      <td>226.137859</td>
+      <td>...</td>
+      <td>0.004682</td>
+      <td>8.720773e-07</td>
+      <td>0.003516</td>
+      <td>0.005621</td>
+      <td>0.000194</td>
+      <td>0.951460</td>
+      <td>0.002367</td>
+      <td>0.001372</td>
+      <td>0.035471</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>69</th>
+      <td>69.0</td>
+      <td>225.147324</td>
+      <td>74.119179</td>
+      <td>143.346451</td>
+      <td>219.001526</td>
+      <td>0.997324</td>
+      <td>221.613964</td>
+      <td>221.922074</td>
+      <td>223.921006</td>
+      <td>227.272990</td>
+      <td>...</td>
+      <td>0.004952</td>
+      <td>9.057054e-07</td>
+      <td>0.003108</td>
+      <td>0.007228</td>
+      <td>0.000125</td>
+      <td>0.936315</td>
+      <td>0.002690</td>
+      <td>0.000900</td>
+      <td>0.049634</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>70</th>
+      <td>70.0</td>
+      <td>226.097931</td>
+      <td>71.899506</td>
+      <td>143.430267</td>
+      <td>220.504547</td>
+      <td>0.997038</td>
+      <td>222.620859</td>
+      <td>223.299977</td>
+      <td>225.683107</td>
+      <td>229.456949</td>
+      <td>...</td>
+      <td>0.000979</td>
+      <td>3.374264e-07</td>
+      <td>0.002443</td>
+      <td>0.029436</td>
+      <td>0.000107</td>
+      <td>0.561698</td>
+      <td>0.011160</td>
+      <td>0.001887</td>
+      <td>0.393268</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>71</th>
+      <td>71.0</td>
+      <td>226.351257</td>
+      <td>73.378296</td>
+      <td>144.113678</td>
+      <td>216.857239</td>
+      <td>0.997415</td>
+      <td>222.566655</td>
+      <td>223.279779</td>
+      <td>225.846337</td>
+      <td>229.603299</td>
+      <td>...</td>
+      <td>0.000200</td>
+      <td>2.243794e-06</td>
+      <td>0.001919</td>
+      <td>0.024612</td>
+      <td>0.000014</td>
+      <td>0.190274</td>
+      <td>0.014294</td>
+      <td>0.000440</td>
+      <td>0.768446</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>72</th>
+      <td>72.0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>...</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+  </tbody>
+</table>
+<p>73 rows × 162 columns</p>
+</div></div></div>
+</div>
+<p>You can also plot the detection results from a video. The frames are not extracted from the video (that will result in thousands of images) so the visualization only shows the detected face without the underlying image.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">video_prediction</span><span class="o">.</span><span class="n">iloc</span><span class="p">[[</span><span class="mi">0</span><span class="p">]]</span><span class="o">.</span><span class="n">plot_detections</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Input image /home/jcheong/packages/feat/feat/tests/data/input.mp4 not found.
+</pre></div>
+</div>
+<img alt="../_images/detector_32_1.png" src="../_images/detector_32_1.png" />
+</div>
+</div>
+<p>In situations you don’t need predictions for EVERY frame of the video, you can specify how many frames to skip with <code class="docutils literal notranslate"><span class="pre">skip_frames</span></code>.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">video_prediction</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">detect_video</span><span class="p">(</span><span class="n">test_video</span><span class="p">,</span> <span class="n">skip_frames</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">video_prediction</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/jcheong/packages/feat/feat/emo_detectors/ferNet/ferNet_test.py:147: UserWarning: Implicit dimension choice for softmax has been deprecated. Change the call to include dim=X as an argument.
+  pred_emo_softmax = nn.functional.softmax(
+</pre></div>
+</div>
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>frame</th>
+      <th>FaceRectX</th>
+      <th>FaceRectY</th>
+      <th>FaceRectWidth</th>
+      <th>FaceRectHeight</th>
+      <th>FaceScore</th>
+      <th>x_0</th>
+      <th>x_1</th>
+      <th>x_2</th>
+      <th>x_3</th>
+      <th>...</th>
+      <th>AU23</th>
+      <th>AU24</th>
+      <th>anger</th>
+      <th>disgust</th>
+      <th>fear</th>
+      <th>happiness</th>
+      <th>sadness</th>
+      <th>surprise</th>
+      <th>neutral</th>
+      <th>input</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.0</td>
+      <td>225.785461</td>
+      <td>79.790741</td>
+      <td>143.439087</td>
+      <td>219.655396</td>
+      <td>0.997335</td>
+      <td>220.742497</td>
+      <td>221.692862</td>
+      <td>224.857535</td>
+      <td>229.261025</td>
+      <td>...</td>
+      <td>0.005269</td>
+      <td>1.499276e-04</td>
+      <td>0.002553</td>
+      <td>0.041428</td>
+      <td>0.000036</td>
+      <td>0.017561</td>
+      <td>0.018628</td>
+      <td>0.001683</td>
+      <td>0.918109</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>20.0</td>
+      <td>221.230301</td>
+      <td>72.924423</td>
+      <td>145.104263</td>
+      <td>218.800369</td>
+      <td>0.997405</td>
+      <td>217.824738</td>
+      <td>217.966902</td>
+      <td>219.744936</td>
+      <td>223.301323</td>
+      <td>...</td>
+      <td>0.002898</td>
+      <td>2.599955e-07</td>
+      <td>0.002291</td>
+      <td>0.004509</td>
+      <td>0.000186</td>
+      <td>0.970820</td>
+      <td>0.001761</td>
+      <td>0.000882</td>
+      <td>0.019552</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>40</th>
+      <td>40.0</td>
+      <td>222.305145</td>
+      <td>71.947517</td>
+      <td>143.455597</td>
+      <td>218.401245</td>
+      <td>0.996271</td>
+      <td>217.340510</td>
+      <td>217.315728</td>
+      <td>218.900354</td>
+      <td>222.455399</td>
+      <td>...</td>
+      <td>0.009150</td>
+      <td>3.194340e-06</td>
+      <td>0.005507</td>
+      <td>0.008199</td>
+      <td>0.000283</td>
+      <td>0.936992</td>
+      <td>0.003926</td>
+      <td>0.002664</td>
+      <td>0.042429</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>60.0</td>
+      <td>221.634705</td>
+      <td>71.399429</td>
+      <td>142.981506</td>
+      <td>217.118454</td>
+      <td>0.996953</td>
+      <td>217.609933</td>
+      <td>217.592436</td>
+      <td>219.237523</td>
+      <td>222.668597</td>
+      <td>...</td>
+      <td>0.007433</td>
+      <td>3.049727e-06</td>
+      <td>0.008578</td>
+      <td>0.009447</td>
+      <td>0.000175</td>
+      <td>0.936682</td>
+      <td>0.001617</td>
+      <td>0.002478</td>
+      <td>0.041023</td>
+      <td>/home/jcheong/packages/feat/feat/tests/data/in...</td>
+    </tr>
+  </tbody>
+</table>
+<p>4 rows × 162 columns</p>
+</div></div></div>
+</div>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
