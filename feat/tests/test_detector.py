@@ -236,7 +236,7 @@ def test_detect_video():
     inputFname = os.path.join(get_test_data_path(), "input.mp4")
     out = detector.detect_video(inputFname=inputFname, skip_frames=60)
     assert len(out) == 2
-
+    assert type(out) == Fex
 
 def test_detect_video_parallel():
     # Test detect video
