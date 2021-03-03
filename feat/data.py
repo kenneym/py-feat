@@ -184,13 +184,9 @@ class Fex(DataFrame):
     Args:
         filename: (str, optional) path to file
         detector: (str, optional) name of software used to extract Fex. (Feat, FACET, OpenFace, or Affectiva)
-        sampling_freq (float, optional): sampling rate of each row in Hz;
-                                         defaults to None
-        features (pd.Dataframe, optional): features that correspond to each
-                                          Fex row
-        sessions: Unique values indicating rows associated with a specific
-                  session (e.g., trial, subject, etc). Must be a 1D array of
-                  n_samples elements; defaults to None
+        sampling_freq (float, optional): sampling rate of each row in Hz; defaults to None
+        features (pd.Dataframe, optional): features that correspond to each Fex row
+        sessions: Unique values indicating rows associated with a specific session (e.g., trial, subject, etc).Must be a 1D array of n_samples elements; defaults to None
     """
 
     # you MUST specify attributes to work with pandas.
@@ -268,8 +264,7 @@ class Fex(DataFrame):
         return FexSeries
 
     def _ixs(self, i, axis=0):
-        """Override indexing to ensure Fex._metadata is propogated correctly
-            when integer indexing
+        """Override indexing to ensure Fex._metadata is propogated correctly when integer indexing
 
         i : int, slice, or sequence of integers
         axis : int
@@ -834,14 +829,9 @@ class Fex(DataFrame):
         """Reference a Fex object to a baseline.
 
         Args:
-            method: {'median', 'mean', 'begin', FexSeries instance}. Will subtract baseline
-                    from Fex object (e.g., mean, median).  If passing a Fex
-                    object, it will treat that as the baseline.
-            normalize: (str). Can normalize results of baseline.
-                        Values can be [None, 'db','pct']; default None.
-            ignore_sessions: (bool) If True, will ignore Fex.sessions
-                             information. Otherwise, method will be applied
-                             separately to each unique session.
+            method: {'median', 'mean', 'begin', FexSeries instance}. Will subtract baseline from Fex object (e.g., mean, median).  If passing a Fex object, it will treat that as the baseline.
+            normalize: (str). Can normalize results of baseline. Values can be [None, 'db','pct']; default None.
+            ignore_sessions: (bool) If True, will ignore Fex.sessions information. Otherwise, method will be applied separately to each unique session.
 
         Returns:
             Fex object
@@ -938,29 +928,14 @@ class Fex(DataFrame):
         If Fex.sessions is not None, sessions will be cleaned separately.
 
         Args:
-            confounds: (numpy.ndarray, str or list of Confounds timeseries)
-                        Shape must be (instant number, confound number),
-                        or just (instant number,). The number of time
-                        instants in signals and confounds must be identical
-                        (i.e. signals.shape[0] == confounds.shape[0]). If a
-                        string is provided, it is assumed to be the name of
-                        a csv file containing signals as columns, with an
-                        optional one-line header. If a list is provided,
-                        all confounds are removed from the input signal,
-                        as if all were in the same array.
-
+            confounds: (numpy.ndarray, str or list of Confounds timeseries) Shape must be (instant number, confound number), or just (instant number,). The number of time instants in signals and confounds must be identical (i.e. signals.shape[0] == confounds.shape[0]). If a string is provided, it is assumed to be the name of a csv file containing signals as columns, with an optional one-line header. If a list is provided, all confounds are removed from the input signal, as if all were in the same array.
             low_pass: (float) low pass cutoff frequencies in Hz.
             high_pass: (float) high pass cutoff frequencies in Hz.
-            detrend: (bool) If detrending should be applied on timeseries
-                     (before confound removal)
-            standardize: (bool) If True, returned signals are set to unit
-                         variance.
-            ensure_finite: (bool) If True, the non-finite values
-                           (NANs and infs) found in the data will be
-                           replaced by zeros.
-            ignore_sessions: (bool) If True, will ignore Fex.sessions
-                             information. Otherwise, method will be applied
-                             separately to each unique session.
+            detrend: (bool) If detrending should be applied on timeseries (before confound removal)
+            standardize: (bool) If True, returned signals are set to unit variance.
+            ensure_finite: (bool) If True, the non-finite values (NANs and infs) found in the data will be replaced by zeros.
+            ignore_sessions: (bool) If True, will ignore Fex.sessions information. Otherwise, method will be applied separately to each unique session.
+
         Returns:
             cleaned Fex instance
 
@@ -998,15 +973,12 @@ class Fex(DataFrame):
         """Decompose Fex instance
 
         Args:
-            algorithm: (str) Algorithm to perform decomposition
-                        types=['pca','ica','nnmf','fa']
+            algorithm: (str) Algorithm to perform decomposition types=['pca','ica','nnmf','fa']
             axis: dimension to decompose [0,1]
-            n_components: (int) number of components. If None then retain
-                        as many as possible.
+            n_components: (int) number of components. If None then retain as many as possible.
 
         Returns:
             output: a dictionary of decomposition parameters
-
         """
 
         out = {}
@@ -1058,11 +1030,10 @@ class Fex(DataFrame):
         """Extract mean of each feature
 
         Args:
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+
         Returns:
             Fex: mean values for each feature
-
         """
         prefix = "mean_"
         if self.sessions is None or ignore_sessions:
@@ -1095,11 +1066,10 @@ class Fex(DataFrame):
         """Extract minimum of each feature
 
         Args:
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+        
         Returns:
             Fex: (Fex) minimum values for each feature
-
         """
         prefix = "min_"
         if self.sessions is None or ignore_sessions:
@@ -1132,11 +1102,9 @@ class Fex(DataFrame):
         """Extract maximum of each feature
 
         Args:
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
         Returns:
             fex: (Fex) maximum values for each feature
-
         """
         prefix = "max_"
         if self.sessions is None or ignore_sessions:
@@ -1174,8 +1142,7 @@ class Fex(DataFrame):
             mean: (bool) extract mean of features
             max: (bool) extract max of features
             min: (bool) extract min of features
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
 
         Returns:
             fex: (Fex)
@@ -1234,10 +1201,9 @@ class Fex(DataFrame):
         Args:
             freq: (float) frequency to extract
             num_cyc: (float) number of cycles for wavelet
-            mode: (str) feature to extract, e.g.,
-                        ['complex','filtered','phase','magnitude','power']
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            mode: (str) feature to extract, e.g., 'complex','filtered','phase','magnitude','power']
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+        
         Returns:
             convolved: (Fex instance)
 
@@ -1297,10 +1263,9 @@ class Fex(DataFrame):
             max_freq: (float) maximum frequency to extract
             bank: (int) size of wavelet bank
             num_cyc: (float) number of cycles for wavelet
-            mode: (str) feature to extract, e.g.,
-                        ['complex','filtered','phase','magnitude','power']
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            mode: (str) feature to extract, e.g., ['complex','filtered','phase','magnitude','power']
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+
         Returns:
             convolved: (Fex instance)
         """
@@ -1708,8 +1673,8 @@ class Fextractor:
 
         Args:
             fex_object: (Fex) Fex instance to extract features from.
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+
         Returns:
             Fex: mean values for each feature
 
@@ -1726,8 +1691,8 @@ class Fextractor:
 
         Args:
             fex_object: (Fex) Fex instance to extract features from.
-            ignore_sessions: (bool) ignore sessions or extract separately
-                             by sessions if available.
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+
         Returns:
             Fex: (Fex) maximum values for each feature
         """
@@ -1743,8 +1708,8 @@ class Fextractor:
 
         Args:
             fex_object: (Fex) Fex instance to extract features from.
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+
         Returns:
             Fex: (Fex) minimum values for each feature
 
@@ -1772,8 +1737,8 @@ class Fextractor:
             mean: (bool) extract mean of features
             max: (bool) extract max of features
             min: (bool) extract min of features
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+       
         Returns:
             fex: (Fex)
         """
@@ -1792,10 +1757,9 @@ class Fextractor:
             fex_object: (Fex) Fex instance to extract features from.
             freq: (float) frequency to extract
             num_cyc: (float) number of cycles for wavelet
-            mode: (str) feature to extract, e.g.,
-                        ['complex','filtered','phase','magnitude','power']
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            mode: (str) feature to extract, e.g., ['complex','filtered','phase','magnitude','power']
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+
         Returns:
             convolved: (Fex instance)
         """
@@ -1809,9 +1773,9 @@ class Fextractor:
     def multi_wavelet(
         self, fex_object, min_freq=0.06, max_freq=0.66, bank=8, *args, **kwargs
     ):
-        """Convolve with a bank of morlet wavelets. Wavelets are equally
-        spaced from min to max frequency. See extract_wavelet for more
-        information and options.
+        """Convolve with a bank of morlet wavelets.
+        
+        Wavelets are equally spaced from min to max frequency. See extract_wavelet for more information and options.
 
         Args:
             fex_object: (Fex) Fex instance to extract features from.
@@ -1819,10 +1783,9 @@ class Fextractor:
             max_freq: (float) maximum frequency to extract
             bank: (int) size of wavelet bank
             num_cyc: (float) number of cycles for wavelet
-            mode: (str) feature to extract, e.g.,
-                        ['complex','filtered','phase','magnitude','power']
-            ignore_sessions: (bool) ignore sessions or extract separately
-                                    by sessions if available.
+            mode: (str) feature to extract, e.g., ['complex','filtered','phase','magnitude','power']
+            ignore_sessions: (bool) ignore sessions or extract separately by sessions if available.
+
         Returns:
             convolved: (Fex instance)
         """
@@ -1835,6 +1798,7 @@ class Fextractor:
 
     def boft(self, fex_object, min_freq=0.06, max_freq=0.66, bank=8, *args, **kwargs):
         """Extract Bag of Temporal features
+
         Args:
             fex_object: (Fex) Fex instance to extract features from.
             min_freq: maximum frequency of temporal filters
@@ -1855,11 +1819,12 @@ class Fextractor:
 
     def merge(self, out_format="long"):
         """Merge all extracted features to a single dataframe
+        
         Args:
             format: (str) Output format of merged data. Can be set to 'long' or 'wide'. Defaults to long.
+        
         Returns:
-            merged: (DataFrame) DataFrame containing merged features extracted
-                    from a Fex instance.
+            merged: (DataFrame) DataFrame containing merged features extracted from a Fex instance.
 
         """
         out = reduce(

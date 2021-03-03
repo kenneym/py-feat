@@ -71,9 +71,9 @@ class Detector(object):
             emotion_model: emotion_model object
 
         Examples:
-            >> detector = Detector(n_jobs=1)
-            >> detector.detect_image("input.jpg")
-            >> detector.detect_video("input.mp4")
+            >>> detector = Detector(n_jobs=1)
+            >>> detector.detect_image("input.jpg")
+            >>> detector.detect_video("input.mp4")
         """
         self.info = {}
         self.info["n_jobs"] = n_jobs
@@ -212,11 +212,11 @@ class Detector(object):
             array: face detection results (x, y, width, height)
 
         Examples: 
-            >> import cv2
-            >> frame = cv2.imread(imgfile)
-            >> from feat import Detector
-            >> detector = Detector()        
-            >> detector.detect_faces(frame)
+            >>> import cv2
+            >>> frame = cv2.imread(imgfile)
+            >>> from feat import Detector
+            >>> detector = Detector()        
+            >>> detector.detect_faces(frame)
         """        
         # suppose frame=cv2.imread(imgname)
         height, width, _ = frame.shape
@@ -237,12 +237,12 @@ class Detector(object):
             list: x and y landmark coordinates (1,68,2)
 
         Examples: 
-            >> import cv2
-            >> frame = cv2.imread(imgfile)
-            >> from feat import Detector
-            >> detector = Detector()
-            >> detected_faces = detector.detect_faces(frame)        
-            >> detector.detect_landmarks(frame, detected_faces)
+            >>> import cv2
+            >>> frame = cv2.imread(imgfile)
+            >>> from feat import Detector
+            >>> detector = Detector()
+            >>> detected_faces = detector.detect_faces(frame)        
+            >>> detector.detect_landmarks(frame, detected_faces)
         """        
         mean = np.asarray([0.485, 0.456, 0.406])
         std = np.asarray([0.229, 0.224, 0.225])
@@ -322,8 +322,6 @@ class Detector(object):
     def detect_aus(self, frame, landmarks):
         """Detect Action Units from image or video frame
 
-        Detect Action units from a frame (loaded image or frame of video).
-
         Args:
             frame (array): image loaded in array format (n, m, 3)
             landmarks (array): 68 landmarks used to localize face.
@@ -332,11 +330,11 @@ class Detector(object):
             array: Action Unit predictions
 
         Examples: 
-            >> import cv2
-            >> frame = cv2.imread(imgfile)
-            >> from feat import Detector
-            >> detector = Detector()        
-            >> detector.detect_aus(frame)
+            >>> import cv2
+            >>> frame = cv2.imread(imgfile)
+            >>> from feat import Detector
+            >>> detector = Detector()        
+            >>> detector.detect_aus(frame)
         """        
         # Assume that the Raw landmark is given in the format (n_land,2)
         landmarks = np.transpose(landmarks)
@@ -356,13 +354,13 @@ class Detector(object):
             array: Action Unit predictions
 
         Examples: 
-            >> import cv2
-            >> frame = cv2.imread(imgfile)
-            >> from feat import Detector
-            >> detector = Detector()        
-            >> detected_faces = detector.detect_faces(frame)
-            >> detected_landmarks = detector.detect_landmarks(frame, detected_faces)
-            >> detector.detect_emotions(frame, detected_faces, detected_landmarks)
+            >>> import cv2
+            >>> frame = cv2.imread(imgfile)
+            >>> from feat import Detector
+            >>> detector = Detector()        
+            >>> detected_faces = detector.detect_faces(frame)
+            >>> detected_landmarks = detector.detect_landmarks(frame, detected_faces)
+            >>> detector.detect_emotions(frame, detected_faces, detected_landmarks)
         """        
         if self.info["emotion_model"].lower() == 'fer':
             landmarks = np.transpose(landmarks)
@@ -385,10 +383,10 @@ class Detector(object):
             df (dataframe): Prediction results dataframe.
 
         Example:
-            >> from pil import Image
-            >> frame = Image.open("input.jpg")
-            >> detector = Detector()
-            >> detector.process_frame(np.array(frame))
+            >>> from pil import Image
+            >>> frame = Image.open("input.jpg")
+            >>> detector = Detector()
+            >>> detector.process_frame(np.array(frame))
         """
         try:
             # detect faces
@@ -450,10 +448,12 @@ class Detector(object):
 
     def detect_video(self, inputFname, outputFname=None, skip_frames=1, verbose=False):
         """Detects FEX from a video file.
+
         Args:
             inputFname (str): Path to video file
             outputFname (str, optional): Path to output file. Defaults to None.
             skip_frames (int, optional): Number of every other frames to skip for speed or if not all frames need to be processed. Defaults to 1.
+            
         Returns:
             dataframe: Prediction results dataframe if outputFname is None. Returns True if outputFname is specified.
         """
@@ -514,7 +514,8 @@ class Detector(object):
             )
 
     def detect_image(self, inputFname, outputFname=None, verbose=False):
-        """Detects FEX from a video file.
+        """Detects FEX from an image file.
+
         Args:
             inputFname (str, or list of str): Path to image file or a list of paths to image files.
             outputFname (str, optional): Path to output file. Defaults to None.
