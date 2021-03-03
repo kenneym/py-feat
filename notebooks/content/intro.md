@@ -16,7 +16,7 @@ git clone https://github.com/cosanlab/feat.git
 - Install in Google Colab or Kaggle 
 Installation to Colab or Kaggle is similar and you can install from pip too. 
 ```
-!git clone https://github.com/cosanlab/feat.git`  
+!git clone https://github.com/cosanlab/feat.git  
 !cd feat && pip install -q -r requirements.txt
 !cd feat && pip install -q -e . 
 !cd feat && python bin/download_models.py
