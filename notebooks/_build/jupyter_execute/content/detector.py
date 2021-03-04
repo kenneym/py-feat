@@ -114,25 +114,37 @@ image_to_plot = image_prediction.input().unique()[1]
 image_prediction.query("input == @image_to_plot").plot_detections();
 
 ## Detecting facial expressions from videos. 
-Detecting facial expressions in videos is also easy by using the `detect_video()` method. 
+Detecting facial expressions in videos is also easy by using the `detect_video()` method. This sample video is by [Wolfgang Langer](https://www.pexels.com/@wolfgang-langer-1415383?utm_content=attributionCopyText&utm_medium=referral&utm_source=pexels) from [Pexels](https://www.pexels.com/video/a-woman-exhibits-different-emotions-through-facial-expressions-3063838/).
 
 # Find the file you want to process.
 from feat.tests.utils import get_test_data_path
 import os, glob
 test_data_dir = get_test_data_path()
-test_video = os.path.join(test_data_dir, "input.mp4")
+test_video = os.path.join(test_data_dir, "WolfgangLanger_Pexels.mp4")
 
+# Show video
 from IPython.display import Video
 Video(test_video, embed=True)
+
+Let's predict facial expressions from the video using the `detect_video()` method.
 
 video_prediction = detector.detect_video(test_video)
 video_prediction.head()
 
 You can also plot the detection results from a video. The frames are not extracted from the video (that will result in thousands of images) so the visualization only shows the detected face without the underlying image.
 
-video_prediction.iloc[[30]].plot_detections();
+The video has 24 fps and the actress show sadness around the 0:02, and happiness at 0:14 seconds.
+
+video_prediction.iloc[[2*24]].plot_detections();
+
+video_prediction.iloc[[13*24]].plot_detections();
+
+We can also leverage existing pandas plotting functions to show how emotions unfold over time. We can clearly see how her emotions change from sadness to happiness.
+
+video_prediction.emotions().plot()
 
 In situations you don't need predictions for EVERY frame of the video, you can specify how many frames to skip with `skip_frames`.
 
 video_prediction = detector.detect_video(test_video, skip_frames=20)
 video_prediction
+
