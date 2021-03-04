@@ -106,9 +106,12 @@ When you have multiple images, you can still call the plot_detection which will 
 
 image_prediction.plot_detections();
 
-You can use the slicing function to plot specific rows in the detection results. 
+You can use the slicing function to plot specific rows in the detection results or for a particular input file.
 
 image_prediction.iloc[[1]].plot_detections();
+
+image_to_plot = image_prediction.input().unique()[1]
+image_prediction.query("input == @image_to_plot").plot_detections();
 
 ## Detecting facial expressions from videos. 
 Detecting facial expressions in videos is also easy by using the `detect_video()` method. 
@@ -119,12 +122,15 @@ import os, glob
 test_data_dir = get_test_data_path()
 test_video = os.path.join(test_data_dir, "input.mp4")
 
+from IPython.display import Video
+Video(test_video, embed=True)
+
 video_prediction = detector.detect_video(test_video)
-video_prediction
+video_prediction.head()
 
 You can also plot the detection results from a video. The frames are not extracted from the video (that will result in thousands of images) so the visualization only shows the detected face without the underlying image.
 
-video_prediction.iloc[[0]].plot_detections();
+video_prediction.iloc[[30]].plot_detections();
 
 In situations you don't need predictions for EVERY frame of the video, you can specify how many frames to skip with `skip_frames`.
 

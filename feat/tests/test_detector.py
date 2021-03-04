@@ -14,7 +14,7 @@ import wget
 import cv2
 import numpy as np
 
-inputFname = os.path.join(get_test_data_path(), "sampler0000.jpg")
+inputFname = os.path.join(get_test_data_path(), "input.jpg")
 img01 = cv2.imread(inputFname)
 h, w, _ = img01.shape
 
@@ -37,8 +37,8 @@ def test_faceboxes():
     out = detector01.detect_faces(img01)
     bbox_left = out[0][0]
     assert bbox_left != None
-    bbox_right = out[0][1]
-    bbox_top = out[0][2]
+    bbox_right = out[0][2]
+    bbox_top = out[0][1]
     bbox_bottom = out[0][3]
     assert len(out[0]) == 5
     assert (
@@ -66,8 +66,8 @@ def test_retinaface():
     out = detector02.detect_faces(img01)
     bbox_left = out[0][0]
     assert bbox_left != None
-    bbox_right = out[0][1]
-    bbox_top = out[0][2]
+    bbox_right = out[0][2]
+    bbox_top = out[0][1]
     bbox_bottom = out[0][3]
     assert len(out[0]) == 5
     assert (
@@ -95,8 +95,8 @@ def test_mtcnn():
     out = detector03.detect_faces(img01)
     bbox_left = out[0][0]
     assert bbox_left != None
-    bbox_right = out[0][1]
-    bbox_top = out[0][2]
+    bbox_right = out[0][2]
+    bbox_top = out[0][1]
     bbox_bottom = out[0][3]
     assert len(out[0]) == 5
     assert (
@@ -176,7 +176,7 @@ def test_jaanet():
 
 def test_drml():
     # AU Detection Case2:
-    inputFname = os.path.join(get_test_data_path(), "sampler0000.jpg")
+    inputFname = os.path.join(get_test_data_path(), "input.jpg")
     img01 = cv2.imread(inputFname)
     detector1 = Detector(
         face_model="RetinaFace",
@@ -192,10 +192,10 @@ def test_drml():
 
 
 def test_resmasknet():
-    inputFname = os.path.join(get_test_data_path(), "sampler0000.jpg")
+    inputFname = os.path.join(get_test_data_path(), "input.jpg")
     detector1 = Detector(emotion_model="resmasknet")
     out = detector1.detect_image(inputFname)
-    assert out.emotions()["neutral"].values > 0.5
+    assert out.emotions()["neutral"].values < 0.5
 
 
 def test_detect_image():

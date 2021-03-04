@@ -209,7 +209,7 @@ class Detector(object):
             frame (array): image array
 
         Returns:
-            array: face detection results (x, y, width, height)
+            array: face detection results (x, y, x2, y2)
 
         Examples: 
             >>> import cv2

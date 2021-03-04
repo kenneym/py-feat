@@ -11,11 +11,10 @@ Open the current notebook in [Google Colab](http://colab.research.google.com/) a
 !cd feat && python bin/download_models.py
 # Click Runtime from top menu and Restart Runtime! 
 
-:::{warning}
+```{warning}
 Make sure you `Restart Runtime` from the `Runtime` top menu bar to refresh your session. 
 In Kaggle, click `Restart & clear outputs` from the `Run` top menu bar. NOT `Restart session`
-:::
-
+```
 
 # Check Fex class installation
 from feat import Fex
