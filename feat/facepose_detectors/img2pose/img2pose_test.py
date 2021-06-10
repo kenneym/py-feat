@@ -19,7 +19,7 @@ keep_top_k = 750
 vis_thres = 0.5
 POSE_MEAN = os.path.join(get_resource_path(), "WIDER_train_pose_mean_v1.npy")
 POSE_STDDEV = os.path.join(get_resource_path(), "WIDER_train_pose_stddev_v1.npy")
-THREE_D_POINTS = os.path.join(get_resource_path(), "reference_3d_68_points_trans.npy")
+THREED_FACE_MODEL = os.path.join(get_resource_path(), "reference_3d_68_points_trans.npy")
 
 
 class Img2Pose:
@@ -36,7 +36,7 @@ class Img2Pose:
         """
         pose_mean = np.load(POSE_MEAN, allow_pickle=True)
         pose_stddev = np.load(POSE_STDDEV, allow_pickle=True)
-        threed_points = np.load(THREE_D_POINTS, allow_pickle=True)
+        threed_points = np.load(THREED_FACE_MODEL, allow_pickle=True)
 
         self.model = img2poseModel(
             DEPTH, MIN_SIZE, MAX_SIZE,
@@ -80,7 +80,25 @@ class Img2Pose:
         elif optimizer:
             print("Optimizer not found in model path - cannot be loaded")
 
-    def __call__(self, img, euler=True):
+    def __call__(self, img_):
+        """ Runs scale_and_predict on each image in the passed image list
+        Args:
+            img_ (np.ndarray): (B,H,W,C), B is batch number, H is image height, W is width and C is channel.
+
+        Returns:
+            tuple: (faces, poses) - 3D lists (B, F, bbox) or (B, F, face pose) where B is batch/ image number and
+                                    F is face number
+        """
+        faces = []
+        poses = []
+        for img in img_:
+            preds = scale_and_predict(img)
+            faces.append(preds['boxes'])
+            poses.append(preds['poses'])
+
+        return bboxes, poses
+
+    def scale_and_predict(self, img, euler=True):
         """ Runs a prediction on the passed image. Returns detected faces and associates poses.
         Args:
             img (np.ndarray): A cv2 image
@@ -89,6 +107,7 @@ class Img2Pose:
         Returns:
             dict: key 'pose' contains array - [yaw, pitch, roll], key 'boxes' contains 2D array of bboxes
         """
+
         # Transform image to improve model performance
         img = img.copy()
         h, w = img.shape[:2]
