@@ -6,13 +6,21 @@ class PerspectiveNPoint:
     def __init__(self):
         self.model = PerspectiveNPointModel()
 
-    def __call__(self, img, landmarks):
+    def __call__(self, frames, landmarks):
         """ Determines headpose using passed 68 2D landmarks
         Args:
-            img (np.ndarray) : The cv2 image from which the landmarks were produced
-            landmarks (np.ndarray) : The landmarks to use to produce the headpose estimate
+            frames (np.ndarray) : A list of cv2 images from which the landmarks were produced
+            landmarks (np.ndarray) : The landmarks used to produce headpose estimates
 
         Returns:
-            np.ndarray: Euler angles ([pitch, roll, yaw])
+            np.ndarray: (num_images, num_faces, [pitch, roll, yaw]) - Euler angles (in degrees) for each face within in
+                        each image
         """
-        return self.model.predict(img, landmarks)
+        all_poses = []
+        for image, image_landmarks in zip(frames, landmarks):
+            poses_in_this_img = []
+            for face_landmarks in image_landmarks:
+                poses_in_this_img.append(self.model.predict(image, face_landmarks))
+            all_poses.append(poses_in_this_img)
+
+        return all_poses

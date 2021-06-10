@@ -80,7 +80,25 @@ class Img2Pose:
         elif optimizer:
             print("Optimizer not found in model path - cannot be loaded")
 
-    def __call__(self, img, euler=True):
+    def __call__(self, img_):
+        """ Runs scale_and_predict on each image in the passed image list
+        Args:
+            img_ (np.ndarray): (B,H,W,C), B is batch number, H is image height, W is width and C is channel.
+
+        Returns:
+            tuple: (faces, poses) - 3D lists (B, F, bbox) or (B, F, face pose) where B is batch/ image number and
+                                    F is face number
+        """
+        faces = []
+        poses = []
+        for img in img_:
+            preds = scale_and_predict(img)
+            faces.append(preds['boxes'])
+            poses.append(preds['poses'])
+
+        return bboxes, poses
+
+    def scale_and_predict(self, img, euler=True):
         """ Runs a prediction on the passed image. Returns detected faces and associates poses.
         Args:
             img (np.ndarray): A cv2 image
@@ -89,6 +107,7 @@ class Img2Pose:
         Returns:
             dict: key 'pose' contains array - [yaw, pitch, roll], key 'boxes' contains 2D array of bboxes
         """
+
         # Transform image to improve model performance
         img = img.copy()
         h, w = img.shape[:2]
