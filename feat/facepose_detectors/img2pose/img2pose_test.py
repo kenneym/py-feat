@@ -19,7 +19,7 @@ keep_top_k = 750
 vis_thres = 0.5
 POSE_MEAN = os.path.join(get_resource_path(), "WIDER_train_pose_mean_v1.npy")
 POSE_STDDEV = os.path.join(get_resource_path(), "WIDER_train_pose_stddev_v1.npy")
-THREE_D_POINTS = os.path.join(get_resource_path(), "reference_3d_68_points_trans.npy")
+THREED_FACE_MODEL = os.path.join(get_resource_path(), "reference_3d_68_points_trans.npy")
 
 
 class Img2Pose:
@@ -36,7 +36,7 @@ class Img2Pose:
         """
         pose_mean = np.load(POSE_MEAN, allow_pickle=True)
         pose_stddev = np.load(POSE_STDDEV, allow_pickle=True)
-        threed_points = np.load(THREE_D_POINTS, allow_pickle=True)
+        threed_points = np.load(THREED_FACE_MODEL, allow_pickle=True)
 
         self.model = img2poseModel(
             DEPTH, MIN_SIZE, MAX_SIZE,
