@@ -18,7 +18,6 @@ inputFname = os.path.join(get_test_data_path(), "input.jpg")
 img01 = read_pictures([inputFname])
 _, h, w, _ = img01.shape
 
-
 def test_detector():
     detector = Detector(n_jobs=1)
     assert detector["n_jobs"] == 1
@@ -113,7 +112,6 @@ def test_img2pose_mismatch():
     )
     assert detector.info["face_model"] == "img2pose-c"
 
-
 def test_mobilefacenet():
     # Landmark Detector Test Case:
     detector01 = Detector(
@@ -168,7 +166,6 @@ def test_jaanet():
         landmark_model="MobileFaceNet",
         au_model="jaanet",
     )
-
     detected_faces = detector1.detect_faces(img01)
     landmarks = detector1.detect_landmarks(img01, detected_faces)
 
@@ -188,7 +185,7 @@ def test_logistic():
 
     detected_faces = detector1.detect_faces(img01)
     landmarks = detector1.detect_landmarks(img01, detected_faces)
-    hogs, new_lands = detector1._batch_hog(frames=img01, detected_faces=detected_faces, landmarks=landmarks)
+    hogs, new_lands = detector1._batch_hog(frames = img01, detected_faces = detected_faces, landmarks = landmarks)
 
     aus = detector1.detect_aus(frame=hogs, landmarks=new_lands)
 
@@ -206,7 +203,7 @@ def test_svm():
     )
     detected_faces = detector1.detect_faces(img01)
     landmarks = detector1.detect_landmarks(img01, detected_faces)
-    hogs, new_lands = detector1._batch_hog(frames=img01, detected_faces=detected_faces, landmarks=landmarks)
+    hogs, new_lands = detector1._batch_hog(frames = img01, detected_faces = detected_faces, landmarks = landmarks)
     aus = detector1.detect_aus(frame=hogs, landmarks=new_lands)
 
     assert np.sum(np.isnan(aus)) == 0
@@ -223,7 +220,7 @@ def test_rf():
     )
     detected_faces = detector1.detect_faces(img01)
     landmarks = detector1.detect_landmarks(img01, detected_faces)
-    hogs, new_lands = detector1._batch_hog(frames=img01, detected_faces=detected_faces, landmarks=landmarks)
+    hogs, new_lands = detector1._batch_hog(frames = img01, detected_faces = detected_faces, landmarks = landmarks)
 
     aus = detector1.detect_aus(frame=hogs, landmarks=new_lands)
 
@@ -281,7 +278,7 @@ def test_pnp():
     lms = detector.detect_landmarks(frame=img01, detected_faces=bboxes)
     poses = detector.detect_facepose(frame=img01, facebox=None, landmarks=lms)
     pose_to_test = poses[0][0]  # first image and first face
-    pitch, roll, yaw = pose.reshape(-1)
+    pitch, roll, yaw = pose_to_test.reshape(-1)
     assert -10 < pitch < 10
     assert -5 < roll < 5
     assert -10 < yaw < 10
@@ -380,7 +377,7 @@ def test_simultaneous():
         au_model="svm",
         facepose_model="img2pose"
     )
-    files = detector04.process_frame(img01, 0)
+    files = detector05.process_frame(img01, 0)
 
 
 def test_no_face_detected():

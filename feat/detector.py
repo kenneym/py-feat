@@ -339,7 +339,6 @@ class Detector(object):
         if frame.ndim == 3:
             frame = np.expand_dims(frame, 0)
         assert frame.ndim == 4, "Frame needs to be 4 dimensions (list of images)"
-
         mean = np.asarray([0.485, 0.456, 0.406])
         std = np.asarray([0.229, 0.224, 0.225])
         self.landmark_detector.eval()
@@ -355,8 +354,9 @@ class Detector(object):
         concate_arr, len_frames_faces, bbox_list = self._face_preprocesing(frame=frame, detected_faces=detected_faces,
                                                                            mean=mean, std=std, out_size=out_size,
                                                                            height=height, width=width)
-        # Run through the deep leanring model
+        # Run through the deep learning model
         input = torch.from_numpy(concate_arr).float()
+
         input = torch.autograd.Variable(input)
         if self.info["landmark_model"]:
             if self.info["landmark_model"].lower() == "mobilefacenet":
@@ -396,7 +396,6 @@ class Detector(object):
         hogs_arr = None
 
         for i in range(len(flat_land)):
-
             frame_assignment = np.where(i < lenth_cumu)[0][0]
 
             convex_hull, new_lands = self.extract_face(
@@ -424,11 +423,11 @@ class Detector(object):
         """
         lenth_index = [len(ama) for ama in detected_faces]
         lenth_cumu = np.cumsum(lenth_index)
-
         flat_faces = [item for sublist in detected_faces for item in sublist]  # Flatten the faces
 
         concatenated_face = None
         bbox_list = []
+
         for k, face in enumerate(flat_faces):
             frame_assignment = np.where(k <= lenth_cumu)[0][0]  # which frame is it?
             x1 = face[0]
@@ -558,11 +557,11 @@ class Detector(object):
         Returns:
             array: Action Unit predictions
 
-        Examples: 
+        Examples:
             >>> import cv2
             >>> frame = cv2.imread(imgfile)
             >>> from feat import Detector
-            >>> detector = Detector()        
+            >>> detector = Detector()
             >>> detector.detect_aus(frame)
         """
         # Assume that the Raw landmark is given in the format (n_land,2)
@@ -585,7 +584,7 @@ class Detector(object):
                         au/emotion models
         Returns:
             list_concat: (list of list). The list which contains the number of faces. for example
-            if you process 2 frames and each frame contains 4 faces, it will return: 
+            if you process 2 frames and each frame contains 4 faces, it will return:
                 [[xxx,xxx,xxx,xxx],[xxx,xxx,xxx,xxx]]
         """
         list_concat = []
@@ -605,18 +604,16 @@ class Detector(object):
         Returns:
             array: Action Unit predictions
 
-        Examples: 
+        Examples:
             >>> import cv2
             >>> frame = cv2.imread(imgfile)
             >>> from feat import Detector
-            >>> detector = Detector()        
+            >>> detector = Detector()
             >>> detected_faces = detector.detect_faces(frame)
             >>> detected_landmarks = detector.detect_landmarks(frame, detected_faces)
             >>> detector.detect_emotions(frame, detected_faces, detected_landmarks)
         """
         if self.info["emotion_model"].lower() == 'fer':
-            # landmarks = np.transpose(landmarks)
-            # if landmarks.shape[-1] == 68:
             #    landmarks = convert68to49(landmarks)
             #    landmarks = landmarks.T
             return self.emotion_model.detect_emo(frame, landmarks)
@@ -640,8 +637,6 @@ class Detector(object):
 
         - When used with pnp model, 'facebox' param is ignored, and the passed 2D landmarks are used to
           compute the head pose for the single face associated with the passed landmarks.
-
-        Args:
             frame (np.ndarray): list of cv2 images
             detected_faces (list): (num_images, num_faces, 4) faceboxes representing faces in the list of images
             landmarks (np.ndarray): (num_images, num_faces, 68, 2) landmarks for the faces contained in list of images
